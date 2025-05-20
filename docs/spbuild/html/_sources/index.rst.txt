@@ -7,7 +7,7 @@
 dysts API Reference
 ##################
 
-The API reference for the dysts .. _repository: https://github.com/williamgilpin/dysts
+The API reference for the dysts repository: https://github.com/williamgilpin/dysts
 
 .. toctree::
    :maxdepth: 2
@@ -19,12 +19,12 @@ Base Classes
 .. automodule:: dysts.base
     :members:
 
-Datasets
-===================
+.. Datasets
+.. ===================
 
-.. automodule:: dysts.datasets
-    :members:
-    :exclude-members: load_file, featurize_timeseries
+.. .. automodule:: dysts.datasets
+..     :members:
+..     :exclude-members: load_file, featurize_timeseries
 
 Utilities
 ===================
@@ -39,6 +39,24 @@ Analysis
 .. automodule:: dysts.analysis
     :members:
 
+Systems
+===================
+
+.. automodule:: dysts.systems
+    :members:
+
+Sampling
+===================
+
+.. automodule:: dysts.sampling
+    :members:
+
+Metrics
+===================
+
+.. automodule:: dysts.metrics
+    :members:
+   
 
 Indices and tables
 ==================
