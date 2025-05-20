@@ -347,7 +347,10 @@ class RandomActivatedCouplingMap(BaseCouplingMap):
     def jac(self, driver: np.ndarray, response: np.ndarray, wrt: str = "driver"):
         if wrt == "driver":
             D = self.coupling_matrix[:, : self.driver_dim]  # type: ignore
-            act_grad = self.driver_activation(self.driver_scale * driver, deriv=True)
+            act_grad = self.driver_activation(
+                self.driver_scale * driver,
+                deriv=True,  # type: ignore
+            )  # TODO: make explicit, this is from the definitions in coupling_maps.py
             return self.driver_scale * act_grad[:, np.newaxis] * D
         elif wrt == "response":
             R = self.coupling_matrix[:, self.driver_dim :]  # type: ignore

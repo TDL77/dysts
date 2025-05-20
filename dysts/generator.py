@@ -73,7 +73,7 @@ class BaseDynSysSampler(ABC):
     def sample_ensembles(
         self,
         systems: list[str] | list[BaseDyn],
-        save_dir: str,
+        save_dir: str | None = None,
         split: str = "train",
         **kwargs,
     ) -> None:
@@ -181,7 +181,7 @@ class DynSysSampler(BaseDynSysSampler):
     def sample_ensembles(
         self,
         systems: list[str] | list[BaseDyn],
-        save_dir: str,
+        save_dir: str | None = None,
         split: str = "train",
         split_failures: str = "failed_attractors",
         samples_process_interval: int = 1,
@@ -676,14 +676,13 @@ class DynSysSampler(BaseDynSysSampler):
         with open(save_path, "w") as f:
             json.dump(traj_stats, f, indent=4)
 
-    def save_summary(
-        self, save_json_path: str, return_dict: bool = False
-    ) -> dict | None:
+    def save_summary(self, save_json_path: str | None = None) -> dict:
         """
         Save a summary of valid attractor counts and failed checks to a json file.
         """
-        os.makedirs(os.path.dirname(save_json_path), exist_ok=True)
-        logger.info(f"Saving summary to {save_json_path}")
+        if save_json_path is not None:
+            os.makedirs(os.path.dirname(save_json_path), exist_ok=True)
+            logger.info(f"Saving summary to {save_json_path}")
 
         if self.attractor_validator is None:
             summary_dict = {"failed_integrations": self.failed_integrations}
@@ -711,11 +710,11 @@ class DynSysSampler(BaseDynSysSampler):
                 "valid_samples": valid_samples,
             }
 
-        with open(save_json_path, "w") as f:
-            json.dump(summary_dict, f, indent=4)
+        if save_json_path is not None:
+            with open(save_json_path, "w") as f:
+                json.dump(summary_dict, f, indent=4)
 
-        if return_dict:
-            return summary_dict
+        return summary_dict
 
     def _get_counts_per_failed_check(self) -> dict[str, int]:
         """
@@ -883,7 +882,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
     def sample_ensembles(
         self,
         systems: list[BaseDyn],
-        save_dir: str,
+        save_dir: str | None = None,
         split: str = "train",
         samples_process_interval: int = 1,
         starting_sample_idx: int = 0,
@@ -905,9 +904,10 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             f" (showing first {min(5, len(sys_names))}): \n {sys_names[:5]}"
         )
 
-        save_dyst_dir = os.path.join(save_dir, split)
-        os.makedirs(save_dyst_dir, exist_ok=True)
-        logger.info(f"valid attractors will be saved to {save_dyst_dir}")
+        if save_dir is not None:
+            save_dyst_dir = os.path.join(save_dir, split)
+            os.makedirs(save_dyst_dir, exist_ok=True)
+            logger.info(f"valid attractors will be saved to {save_dyst_dir}")
 
         if self.attractor_validator is not None:
             self.attractor_validator.reset()
@@ -926,6 +926,8 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
 
         self._generate_ensembles(
             systems,
+            save_dir=save_dir,
+            split=split,
             starting_sample_idx=starting_sample_idx,
             save_first_sample=save_first_sample,
             postprocessing_callbacks=callbacks,
