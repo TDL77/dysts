@@ -19,15 +19,13 @@ dependencies = [
     "scipy",
     "scikit-learn",
     "tqdm",
-    "gluonts[arrow]",
 ]
 
 # Optional dependencies
 [project.optional-dependencies]
 benchmarks = ["darts", "torch", "pandas"]
 numba = ["numba"]
-extra = ["sdeint"]
-
+extra = ["sdeint", "wandb", "statsmodels", "gluonts[arrow]"]
 # Package data
 [tool.setuptools]
 packages = ["dysts", "dysts.utils"]

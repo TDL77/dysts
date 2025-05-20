@@ -1,5 +1,6 @@
 """Example sampling functions for dysts"""
 
+import logging
 import warnings
 from dataclasses import dataclass, field
 from typing import Callable
@@ -7,12 +8,12 @@ from typing import Callable
 import numpy as np
 from numpy.typing import NDArray
 
-import logging
 from .base import BaseDyn
 
 Array = NDArray[np.float64]
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class BaseSampler:
@@ -26,6 +27,7 @@ class BaseSampler:
     def set_rng(self, rng: np.random.Generator) -> None:
         """Required for multiprocessing"""
         self.rng = rng
+
 
 @dataclass
 class SignedGaussianParamSampler(BaseSampler):
@@ -162,6 +164,9 @@ class OnAttractorInitCondSampler(BaseSampler):
             if reference_traj is None:
                 if self.verbose > 0:
                     logger.warning(
+                        f"On-attractor sampling failed integration for {system.name}"
+                    )
+                    warnings.warn(
                         f"On-attractor sampling failed integration for {system.name}"
                     )
                 return None

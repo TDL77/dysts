@@ -3,21 +3,11 @@ import os
 import time
 from datetime import datetime
 from functools import wraps
-from multiprocessing import Pool, cpu_count
 from pathlib import Path
-from typing import Any, Callable, List, Literal, Union
+from typing import Callable, List, Literal, Union
 
 import numpy as np
-from dysts.systems import get_attractor_list
 from gluonts.dataset.arrow import ArrowWriter
-from gluonts.dataset.common import FileDataset
-
-
-def get_dim_from_dataset(dataset: FileDataset) -> int:  # type: ignore
-    """
-    helper function to get system dimension from file dataset
-    """
-    return next(iter(dataset))["target"].shape[0]
 
 
 def safe_standardize(
@@ -110,23 +100,6 @@ def timeit(logger: logging.Logger | None = None) -> Callable:
     return decorator
 
 
-def split_systems(
-    prop: float,
-    seed: int,
-    sys_class: str = "continuous",
-    excluded_systems: list[str] = [],
-) -> tuple[list[str], list[str]]:
-    """
-    Split the list of attractors into training and testing sets.
-    if exclude_systems is provided, the systems in the list will be excluded
-    """
-    np.random.seed(seed)
-    systems = get_attractor_list(sys_class=sys_class, exclude=excluded_systems)
-    np.random.default_rng(seed).shuffle(systems)
-    split = int(len(systems) * prop)
-    return systems[:split], systems[split:]
-
-
 def convert_to_arrow(
     path: Union[str, Path],
     time_series: Union[List[np.ndarray], np.ndarray],
@@ -209,127 +182,3 @@ def process_trajs(
             )
 
             convert_to_arrow(path, trajectory, split_coords=split_coords)
-
-
-def load_trajectory_from_arrow(
-    filepath: Path | str, one_dim_target: bool = False
-) -> tuple[np.ndarray, tuple[Any]]:
-    """Load a trajectory and metadata from an arrow file
-
-    Args:
-        filepath: The path to the arrow file
-        one_dim_target: Whether the target is one-dimensional
-
-    Returns:
-        A tuple containing the trajectory and metadata
-    """
-    assert Path(filepath).exists(), f"Filepath {filepath} does not exist"
-    dataset = FileDataset(path=Path(filepath), freq="h", one_dim_target=one_dim_target)
-    coords, metadata = zip(*[(coord["target"], coord["start"]) for coord in dataset])
-    coordinates = np.stack(coords)
-    if coordinates.ndim > 2:  # if not one_dim_target:
-        coordinates = coordinates.squeeze()
-    return coordinates, metadata
-
-
-def get_system_filepaths(
-    system_name: str, base_dir: Union[str, Path], split: str = "train"
-) -> List[Path]:
-    """
-    Retrieve sorted filepaths for a given dynamical system.
-
-    This function finds and sorts all Arrow files for a specified dynamical system
-    within a given directory structure.
-
-    Args:
-        system_name (str): The name of the dynamical system.
-        base_dir (Union[str, Path]): The base directory containing the data.
-        split (str, optional): The data split to use (e.g., "train", "test"). Defaults to "train".
-
-    Returns:
-        List[Path]: A sorted list of Path objects for the Arrow files of the specified system.
-
-    Raises:
-        Exception: If the directory for the specified system does not exist.
-
-    Note:
-        The function assumes that the Arrow files are named with a numeric prefix
-        (e.g., "1_T-1024.arrow") and sorts them based on this prefix.
-    """
-    dyst_dir = os.path.join(base_dir, split, system_name)
-    if not os.path.exists(dyst_dir):
-        raise Exception(f"Directory {dyst_dir} does not exist.")
-
-    # NOTE: sorting by numerical order wrt sample index is very important for consistency
-    filepaths = sorted(
-        list(Path(dyst_dir).glob("*.arrow")), key=lambda x: int(x.stem.split("_")[0])
-    )
-    return filepaths
-
-
-def load_dyst_samples(
-    dyst_name: str,
-    base_dir: str,
-    split: str,
-    one_dim_target: bool,
-    num_samples: int | None = None,
-) -> np.ndarray:
-    """
-    Load a set of sample trajectories of a given dynamical system from an arrow file
-
-    Args:
-        dyst_name: The name of the dynamical system
-        base_dir: The base directory containing the data
-        split: The data split to use (e.g., "train", "test")
-        num_samples: The number of samples to load
-
-    Returns:
-        A (num_samples, num_features, num_timesteps) numpy array containing the trajectories
-    """
-    filepaths = get_system_filepaths(dyst_name, base_dir, split)
-    dyst_coords_samples = []
-    for filepath in filepaths[:num_samples]:
-        dyst_coords, _ = load_trajectory_from_arrow(filepath, one_dim_target)
-        dyst_coords_samples.append(dyst_coords)
-
-    dyst_coords_samples = np.array(dyst_coords_samples)  # type: ignore
-    return dyst_coords_samples
-
-
-def make_ensemble_from_arrow_dir(
-    base_dir: str,
-    split: str,
-    dyst_names_lst: list[str] | None = None,
-    num_samples: int | None = None,
-    num_systems: int | None = None,
-    one_dim_target: bool = False,
-    num_processes: int = cpu_count(),
-) -> dict[str, np.ndarray]:
-    ensemble: dict[str, np.ndarray] = {}
-    if dyst_names_lst is None:
-        data_dir = os.path.join(base_dir, split)
-        dyst_names_lst = sorted(
-            [folder.name for folder in Path(data_dir).iterdir() if folder.is_dir()]
-        )
-
-    if num_systems is not None:
-        assert num_systems <= len(dyst_names_lst), (
-            f"num_systems {num_systems} must be less than or equal to the number of systems in the directory {len(dyst_names_lst)}"
-        )
-        dyst_names_lst = dyst_names_lst[:num_systems]
-
-    # Prepare arguments for multiprocessing
-    args = [
-        (dyst_name, base_dir, split, one_dim_target, num_samples)
-        for dyst_name in dyst_names_lst
-    ]
-
-    # Use multiprocessing to process each dyst_name
-    with Pool(num_processes) as pool:
-        results = pool.starmap(load_dyst_samples, args)
-
-    # Collect results into the ensemble dictionary
-    for dyst_name, dyst_coords_samples in zip(dyst_names_lst, results):
-        ensemble[dyst_name] = dyst_coords_samples
-
-    return ensemble

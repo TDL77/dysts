@@ -10,11 +10,12 @@ from multiprocessing import Pool
 from typing import Callable, Dict, List, Literal, Optional, Tuple
 
 import numpy as np
-from dysts.analysis import max_lyapunov_exponent_rosenstein, run_zero_one_sweep
 from scipy.fft import rfft
 from scipy.signal import find_peaks
 from scipy.spatial.distance import cdist
 from statsmodels.tsa.stattools import adfuller, kpss
+
+from .analysis import max_lyapunov_exponent_rosenstein, run_zero_one_sweep
 
 
 @dataclass

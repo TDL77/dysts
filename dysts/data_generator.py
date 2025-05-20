@@ -9,18 +9,17 @@ from itertools import starmap
 from multiprocessing import Manager, Pool
 from typing import Callable
 
-import dysts.flows as flows
 import numpy as np
-from dysts.base import BaseDyn
-from dysts.sampling import BaseSampler
-from dysts.systems import make_trajectory_ensemble
-from dysts.attractor import AttractorValidator
-from dysts.sampling import OnAttractorInitCondSampler
-from dysts.skew_system import SkewProduct
-from dysts.utils import dict_demote_from_numpy, process_trajs, timeit
+import wandb
 from tqdm import tqdm
 
-import wandb
+from . import flows
+from .attractor import AttractorValidator
+from .base import BaseDyn
+from .sampling import BaseSampler, OnAttractorInitCondSampler
+from .skew_system import SkewProduct
+from .systems import make_trajectory_ensemble
+from .utils import dict_demote_from_numpy, process_trajs, timeit
 
 logger = logging.getLogger(__name__)
 
