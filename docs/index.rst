@@ -29,15 +29,23 @@ Base Classes
 Utilities
 ===================
 
-.. automodule:: dysts.utils
+.. automodule:: dysts.utils.utils
     :members:
     :exclude-members: group_consecutives, integrate_weiner, parabolic, parabolic_polyfit, signif, resample_timepoints
+
+.. automodule:: dysts.utils.native_utils
+    :members:
+    :exclude-members: group_consecutives, integrate_weiner, parabolic, parabolic_polyfit, signif, resample_timepoints
+
+.. automodule:: dysts.utils.integration_utils
+    :members:
 
 Analysis
 ===================
 
 .. automodule:: dysts.analysis
     :members:
+    :exclude-members: max_lyapunov_exponent_rosenstein, dfa
 
 Systems
 ===================

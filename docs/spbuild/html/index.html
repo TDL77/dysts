@@ -258,10 +258,623 @@ points for t &lt; 0</p></li>
 </dd></dl>
 
 </section>
-<section id="module-dysts.utils">
-<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-dysts.utils" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.utils.utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-dysts.utils.utils" title="Link to this heading">¶</a></h2>
 <p>Helper utilities for working with time series arrays. This module is intended to have no
 dependencies on the rest of the package.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.cartesian_to_polar">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">cartesian_to_polar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.cartesian_to_polar" title="Link to this definition">¶</a></dt>
+<dd><p>Convert 2D cartesian coordinates to polar coordinates</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.find_characteristic_timescale">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">find_characteristic_timescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.find_characteristic_timescale" title="Link to this definition">¶</a></dt>
+<dd><p>Find the k leading characteristic timescales in a time series
+using the power spectrum..</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.find_psd">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">find_psd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.find_psd" title="Link to this definition">¶</a></dt>
+<dd><p>Find the power spectrum of a signal</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.find_significant_frequencies">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">find_significant_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surrogate_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_amplitudes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.find_significant_frequencies" title="Link to this definition">¶</a></dt>
+<dd><p>Find power spectral frequencies that are significant in a signal, by comparing
+the appearance of a peak with its appearance in randomly-shuffled surrogates.</p>
+<p>If no significant freqencies are detected, the significance floor is lowered</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window</strong> (<em>bool</em>) – Whether to window the signal before taking the FFT</p></li>
+<li><p><strong>thresh</strong> (<em>float</em>) – The number of standard deviations above mean to be significant</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – the sampling frequency</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – the number of surrogates to create</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – whether to show the psd of the signal and the surrogate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The frequencies overrated in the dataset
+amps (ndarray): the amplitudes of the PSD at the identified frequencies</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>freqs (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.find_slope">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">find_slope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.find_slope" title="Link to this definition">¶</a></dt>
+<dd><p>Given two vectors or arrays, compute the best fit slope using an analytic
+formula. For arrays is computed along the last axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – (N,) or (M, N)</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – (N,) or (M, N)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the values of the slope for each of the last dimensions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>b (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.freq_from_autocorr">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">freq_from_autocorr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.freq_from_autocorr" title="Link to this definition">¶</a></dt>
+<dd><p>Estimate frequency using autocorrelation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>ndarray</em>) – A univariate signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – The sampling frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dominant frequency</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>out (float)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Modified from the following
+<a class="reference external" href="https://gist.github.com/endolith/255291">https://gist.github.com/endolith/255291</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.freq_from_fft">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">freq_from_fft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.freq_from_fft" title="Link to this definition">¶</a></dt>
+<dd><p>Estimate frequency of a signal from the peak of the power spectrum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> (<em>ndarray</em>) – A univariate signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – The sampling frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dominant frequency</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>out (float)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Modified from the following
+<a class="reference external" href="https://gist.github.com/endolith/255291">https://gist.github.com/endolith/255291</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.jac_fd">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">jac_fd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'central'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.jac_fd" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate numerical jacobian of a function with respect to a reference value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>callable</em>) – a vector-valued function</p></li>
+<li><p><strong>y0</strong> (<em>ndarray</em>) – a point around which to take the gradient</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – the step size for the finite difference calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a numerical estimate of the Jacobian about that point</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>jac (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.logarithmic_n">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">logarithmic_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.logarithmic_n" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of values by successively multiplying a minimum value min_n by
+a factor &gt; 1 until a maximum value max_n is reached. Non-integer results are rounded
+down.
+Based on a similar function in the nolds Python library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_n</strong> (<em>float</em>) – minimum value (must be &lt; max_n)</p></li>
+<li><p><strong>max_n</strong> (<em>float</em>) – maximum value (must be &gt; min_n)</p></li>
+<li><p><strong>factor</strong> (<em>float</em>) – factor used to increase min_n (must be &gt; 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>min_n, min_n * factor, min_n * factor^2, … min_n * factor^i &lt; max_n
+without duplicates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of integers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.make_epsilon_ball">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">make_epsilon_ball</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.make_epsilon_ball" title="Link to this definition">¶</a></dt>
+<dd><p>Uniformly sample a fixed-radius ball of points around a given point via
+using Muller’s method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pt</strong> (<em>ndarray</em>) – The center of the sampling</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – The number of points to sample</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – The radius of the ball</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – Initialize the random number generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The set of randomly-sampled points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>out (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.make_surrogate">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">make_surrogate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.make_surrogate" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ndarray</em>) – A one-dimensional time series</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – “rs” or rp”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A single random surrogate time series</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>surr_data (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.min_data_points_rosenstein">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">min_data_points_rosenstein</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emb_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_tsep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.min_data_points_rosenstein" title="Link to this definition">¶</a></dt>
+<dd><p>Adapted from the nolds Python library:
+<a class="reference external" href="https://github.com/CSchoel/nolds/blob/master/nolds/measures.py">https://github.com/CSchoel/nolds/blob/master/nolds/measures.py</a></p>
+<p>Helper function that calculates the minimum number of data points required
+to use lyap_r.
+Note that none of the required parameters may be set to None.
+:param emb_dim: Embedding dimension
+:type emb_dim: int
+:param lag: Lag between time series values
+:type lag: int
+:param trajectory_len: Length of trajectory to follow
+:type trajectory_len: int
+:param min_tsep: Minimum temporal separation
+:type min_tsep: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>minimum number of data points required to call lyap_r with the given
+parameters</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.nan_fill">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">nan_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.nan_fill" title="Link to this definition">¶</a></dt>
+<dd><p>Fill NaN values in an array using a specified method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>np.ndarray</em>) – the array to fill</p></li>
+<li><p><strong>axis</strong> (<em>int</em>) – the axis along which to fill NaN values</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – the method to use for filling NaN values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the array with NaN values filled</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a_filled (np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.nanmean_trimmed">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">nanmean_trimmed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.nanmean_trimmed" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the trimmed mean of an array along a specified axis, ignoring NaNs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>np.array</em>) – Input array</p></li>
+<li><p><strong>percentile</strong> (<em>float</em>) – The fraction of data to be trimmed. Should be between 0 and
+1. Default is 0.5.</p></li>
+<li><p><strong>axis</strong> (<em>int</em>) – Axis along which to compute the trimmed mean. If None (the default),
+compute over the whole array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Trimmed mean of the input array along the specified axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.pad_axis">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">pad_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.pad_axis" title="Link to this definition">¶</a></dt>
+<dd><p>Pad <cite>axis</cite> of <cite>arr</cite> with a constant <cite>padding</cite> to a desired shape</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.pad_to_shape">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">pad_to_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.pad_to_shape" title="Link to this definition">¶</a></dt>
+<dd><p>Given an array, and a target shape, pad the dimensions in order to reach the desired shape
+Currently, if the rank of the array is lower than the target shape, singleton
+dimensions are appended to the rank</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>ndarray</em>) – The array to pad.</p></li>
+<li><p><strong>target_shape</strong> (<em>iterable</em>) – The desired shape.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The padded array,</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>arr (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.polar_to_cartesian">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">polar_to_cartesian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">th</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.polar_to_cartesian" title="Link to this definition">¶</a></dt>
+<dd><p>Convert polar coordinates to 2D Cartesian coordinates</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.rowwise_euclidean">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">rowwise_euclidean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.rowwise_euclidean" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the euclidean distance across rows</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.utils.standardize_ts">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.utils.standardize_ts" title="Link to this definition">¶</a></dt>
+<dd><p>Standardize an array along dimension -2
+For dimensions with zero variance, divide by one instead of zero</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>ndarray</em>) – a matrix containing a time series or batch of time series
+with shape (T, D) or (B, T, D)</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – the number of standard deviations by which to scale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A standardized time series with the same shape as</dt><dd><p>the input</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ts_scaled (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-dysts.utils.native_utils">Native python utilities</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.utils.native_utils.ComputationHolder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.utils.native_utils.</span></span><span class="sig-name descname"><span class="pre">ComputationHolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.native_utils.ComputationHolder" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper class to force a computation to stop after a timeout.</p>
+<dl>
+<dt>Parameters</dt><dd><p>func (callable): the function to run
+args (tuple): the arguments to pass to the function
+kwargs (dict): the keyword arguments to pass to the function
+timeout (int): the timeout in seconds. If None is passed, the computation</p>
+<blockquote>
+<div><p>will run indefinitely until it finishes.</p>
+</div></blockquote>
+</dd>
+<dt>Example</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">my_func</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span> <span class="o">=</span> <span class="n">ComputationHolder</span><span class="p">(</span><span class="n">my_func</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="go">hello</span>
+<span class="go">hello</span>
+<span class="go">hello</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.native_utils.convert_json_to_gzip">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.native_utils.</span></span><span class="sig-name descname"><span class="pre">convert_json_to_gzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_original</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.native_utils.convert_json_to_gzip" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a json file to a gzip file in a format that can be easily read by the
+<cite>dysts</cite> package. By default, the gzip file will be saved with the same name and
+in the same directory as the json file, but with a “.gz” extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fpath</strong> (<em>str</em>) – Path to the json file to be converted</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – Encoding to use when writing the gzip file</p></li>
+<li><p><strong>delete_original</strong> (<em>bool</em>) – Whether to delete the original json file after
+conversion. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.native_utils.has_module">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.native_utils.</span></span><span class="sig-name descname"><span class="pre">has_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#dysts.utils.native_utils.has_module" title="Link to this definition">¶</a></dt>
+<dd><p>Check if a module is installed</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.native_utils.num_unspecified_params">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.native_utils.</span></span><span class="sig-name descname"><span class="pre">num_unspecified_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#dysts.utils.native_utils.num_unspecified_params" title="Link to this definition">¶</a></dt>
+<dd><p>Count required parameters that haven’t been specified through partial or defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> – Function or partial function to inspect</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of parameters that must be specified when calling the function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-dysts.utils.integration_utils">Utilities for integration</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.dde">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">dde</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.dde" title="Link to this definition">¶</a></dt>
+<dd><p>This class overwrites a few functions of <code class="docutils literal notranslate"><span class="pre">scipy.integrate.ode</span></code>
+to allow for updates of the pseudo-variable Y between each
+integration step.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.dde.integrate">
+<span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.dde.integrate" title="Link to this definition">¶</a></dt>
+<dd><p>Find y=y(t), set y as an initial condition, and return y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – The endpoint of the integration step.</p></li>
+<li><p><strong>step</strong> (<em>bool</em>) – If True, and if the integrator supports the step method,
+then perform a single integration step and return.
+This parameter is provided in order to expose internals of
+the implementation, and should not be changed from its default
+value in most cases.</p></li>
+<li><p><strong>relax</strong> (<em>bool</em>) – If True and if the integrator supports the run_relax method,
+then integrate until t_1 &gt;= t and return. <code class="docutils literal notranslate"><span class="pre">relax</span></code> is not
+referenced if <code class="docutils literal notranslate"><span class="pre">step=True</span></code>.
+This parameter is provided in order to expose internals of
+the implementation, and should not be changed from its default
+value in most cases.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y</strong> – The integrated value at t</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.dde.set_initial_value">
+<span class="sig-name descname"><span class="pre">set_initial_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.dde.set_initial_value" title="Link to this definition">¶</a></dt>
+<dd><p>Set initial conditions y(t) = y.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.ddeVar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">ddeVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.ddeVar" title="Link to this definition">¶</a></dt>
+<dd><p>The instances of this class are special function-like
+variables which store their past values in an interpolator and
+can be called for any past time: Y(t), Y(t-d).
+Very convenient for the integration of DDEs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.ddeVar.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.ddeVar.update" title="Link to this definition">¶</a></dt>
+<dd><p>Add one new (ti,yi) to the interpolator</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.ddeint">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">ddeint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.ddeint" title="Link to this definition">¶</a></dt>
+<dd><p>Solves Delay Differential Equations</p>
+<p>Similar to scipy.integrate.odeint. Solves a Delay differential
+Equation system (DDE) defined by</p>
+<blockquote>
+<div><p>Y(t) = g(t) for t&lt;0
+Y’(t) = func(Y,t) for t&gt;= 0</p>
+</div></blockquote>
+<p>Where func can involve past values of Y, like Y(t-d).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – a function Y,t,args -&gt; Y’(t), where args is optional.
+The variable Y is an instance of class ddeVar, which means that
+it is called like a function: Y(t), Y(t-d), etc. Y(t) returns
+either a number or a numpy array (for multivariate systems).</p></li>
+<li><p><strong>g</strong> – The ‘history function’. A function g(t)=Y(t) for t&lt;0, g(t)
+returns either a number or a numpy array (for multivariate
+systems).</p></li>
+<li><p><strong>tt</strong> – The vector of times [t0, t1, …] at which the system must
+be solved.</p></li>
+<li><p><strong>fargs</strong> – Additional arguments to be passed to parameter <code class="docutils literal notranslate"><span class="pre">func</span></code>, if any.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>We will solve the delayed Lotka-Volterra system defined as</p>
+<blockquote>
+<div><p>For t &lt; 0:
+x(t) = 1+t
+y(t) = 2-t</p>
+<p>For t &gt;= 0:
+dx/dt =  0.5* ( 1- y(t-d) )
+dy/dt = -0.5* ( 1- x(t-d) )</p>
+</div></blockquote>
+<p>The delay <code class="docutils literal notranslate"><span class="pre">d</span></code> is a tunable parameter of the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddeint</span><span class="w"> </span><span class="kn">import</span> <span class="n">ddeint</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">XY</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">XY</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span> <span class="o">=</span> <span class="n">XY</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">yd</span><span class="p">),</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">xd</span><span class="p">)])</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">+</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="o">-</span><span class="n">t</span><span class="p">])</span> <span class="c1"># &#39;history&#39; at t&lt;0</span>
+<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20000</span><span class="p">)</span> <span class="c1"># times for integration</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># set parameter d</span>
+<span class="n">yy</span> <span class="o">=</span> <span class="n">ddeint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">tt</span><span class="p">,</span><span class="n">fargs</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,))</span> <span class="c1"># solve the DDE !</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.generate_ic_ensemble">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">generate_ic_ensemble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpts0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac_perturb_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac_transient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ic_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.generate_ic_ensemble" title="Link to this definition">¶</a></dt>
+<dd><p>Generate an ensemble of trajectories with random initial conditions, labelled by different
+initial conditions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<a href="#id1"><span class="problematic" id="id2">callable_</span></a>) – function defining the numerical derivative</p></li>
+<li><p><strong>tpts</strong> (<em>ndarray</em>) – the timesteps over which to run the simulation</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – the number of different initial conditons</p></li>
+<li><p><strong>frac_perturb_param</strong> (<em>float</em>) – the amount to perturb the ic by</p></li>
+<li><p><strong>frac_transient</strong> (<em>float</em>) – the fraction of time for the time series to settle onto the attractor</p></li>
+<li><p><strong>ic_range</strong> (<em>list</em>) – a starting value for the initial conditions</p></li>
+<li><p><strong>random_state</strong> (<em>int</em>) – the seed for the random number generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of initial conditions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all_samples (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.integrate_dyn">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">integrate_dyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tvals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.integrate_dyn" title="Link to this definition">¶</a></dt>
+<dd><p>Given the RHS of a dynamical system, integrate the system
+noise &gt; 0 requires the Python library sdeint (assumes Brownian noise)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>callable</em>) – The right hand side of a system of ODEs.</p></li>
+<li><p><strong>ic</strong> (<em>ndarray</em>) – the initial conditions</p></li>
+<li><p><strong>tvals</strong> (<em>ndarray</em>) – times points at which to evaluate the solution</p></li>
+<li><p><strong>noise</strong> (<em>float</em><em> or </em><em>iterable</em>) – The amplitude of the Langevin forcing term. If a
+vector is passed, this will be different for each dynamical variable</p></li>
+<li><p><strong>dtval</strong> (<em>float</em>) – The starting integration timestep. This will be the exact timestep for
+fixed-step integrators, or stochastic integration.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Arguments passed to scipy.integrate.solve_ivp.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The integrated trajectory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sol (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.integrate_weiner">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">integrate_weiner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tvals</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.integrate_weiner" title="Link to this definition">¶</a></dt>
+<dd><p>Given the RHS of a dynamical system, integrate the
+system assuming Brownian noise
+Requires the Python library sdeint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>callable</em>) – the right hand side of a system of ODE</p></li>
+<li><p><strong>noise_amp</strong> (<em>float</em>) – the amplitude of the Langevin forcing term</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.utils.integration_utils.resample_timepoints">
+<span class="sig-prename descclassname"><span class="pre">dysts.utils.integration_utils.</span></span><span class="sig-name descname"><span class="pre">resample_timepoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.utils.integration_utils.resample_timepoints" title="Link to this definition">¶</a></dt>
+<dd><p>Given a differential equation, initial condition, and a set of
+integration points, determine a new set of timepoints that
+scales to the periodicity of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>callable</em>) – the right hand side of a set of ODEs</p></li>
+<li><p><strong>ic</strong> (<em>list</em>) – the initial conditions</p></li>
+<li><p><strong>tpts</strong> (<em>array</em>) – the timepoints over which to integrate</p></li>
+<li><p><strong>pts_per_period</strong> (<em>int</em>) – the number of timepoints to sample in
+each period</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled timepoints</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>new_timepoints (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-dysts.analysis">
 <span id="analysis"></span><h2>Analysis<a class="headerlink" href="#module-dysts.analysis" title="Link to this heading">¶</a></h2>
@@ -340,143 +953,6 @@ cross-correlation</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dysts.analysis.dfa">
-<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">dfa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.dfa" title="Link to this definition">¶</a></dt>
-<dd><p>Adapted from the nolds Python library:
-<a class="reference external" href="https://github.com/CSchoel/nolds/blob/master/nolds/measures.py">https://github.com/CSchoel/nolds/blob/master/nolds/measures.py</a></p>
-<p>Performs a detrended fluctuation analysis (DFA) on the given data
-Recommendations for parameter settings by Hardstone et al.:</p>
-<blockquote>
-<div><ul class="simple">
-<li><dl class="simple">
-<dt>nvals should be equally spaced on a logarithmic scale so that each window</dt><dd><p>scale hase the same weight</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>min(nvals) &lt; 4 does not make much sense as fitting a polynomial (even if</dt><dd><p>it is only of order 1) to 3 or less data points is very prone.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>max(nvals) &gt; len(data) / 10 does not make much sense as we will then have</dt><dd><p>less than 10 windows to calculate the average fluctuation</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>use overlap=True to obtain more windows and therefore better statistics</dt><dd><p>(at an increased computational cost)</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
-<dl class="simple">
-<dt>Explanation of DFA:</dt><dd><p>Detrended fluctuation analysis, much like the Hurst exponent, is used to
-find long-term statistical dependencies in time series.
-The idea behind DFA originates from the definition of self-affine
-processes. A process X is said to be self-affine if the standard deviation
-of the values within a window of length n changes with the window length
-factor L in a power law:
-std(X,L * n) = L^H * std(X, n)
-where std(X, k) is the standard deviation of the process X calculated over
-windows of size k. In this equation, H is called the Hurst parameter, which
-behaves indeed very similar to the Hurst exponent.
-Like the Hurst exponent, H can be obtained from a time series by
-calculating std(X,n) for different n and fitting a straight line to the
-plot of log(std(X,n)) versus log(n).
-To calculate a single std(X,n), the time series is split into windows of
-equal length n, so that the ith window of this size has the form
-W_(n,i) = [x_i, x_(i+1), x_(i+2), … x_(i+n-1)]
-The value std(X,n) is then obtained by calculating std(W_(n,i)) for each i
-and averaging the obtained values over i.
-The aforementioned definition of self-affinity, however, assumes that the
-process is    non-stationary (i.e. that the standard deviation changes over
-time) and it is highly influenced by local and global trends of the time
-series.
-To overcome these problems, an estimate alpha of H is calculated by using a
-“walk” or “signal profile” instead of the raw time series. This walk is
-obtained by substracting the mean and then taking the cumulative sum of the
-original time series. The local trends are removed for each window
-separately by fitting a polynomial p_(n,i) to the window W_(n,i) and then
-calculating W’_(n,i) = W_(n,i) - p_(n,i) (element-wise substraction).
-We then calculate std(X,n) as before only using the “detrended” window
-W’_(n,i) instead of W_(n,i). Instead of H we obtain the parameter alpha
-from the line fitting.
-For alpha &lt; 1 the underlying process is stationary and can be modelled as
-fractional Gaussian noise with H = alpha. This means for alpha = 0.5 we
-have no correlation or “memory”, for 0.5 &lt; alpha &lt; 1 we have a memory with
-positive correlation and for alpha &lt; 0.5 the correlation is negative.
-For alpha &gt; 1 the underlying process is non-stationary and can be modeled
-as fractional Brownian motion with H = alpha - 1.</p>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="dfa-1" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>dfa_1<span class="fn-bracket">]</span></span>
-<p>C.-K. Peng, S. V. Buldyrev, S. Havlin, M. Simons,
-H. E. Stanley, and A. L. Goldberger, “Mosaic organization of
-DNA nucleotides,” Physical Review E, vol. 49, no. 2, 1994.</p>
-</div>
-<div class="citation" id="dfa-2" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>dfa_2<span class="fn-bracket">]</span></span>
-<p>R. Hardstone, S.-S. Poil, G. Schiavone, R. Jansen,
-V. V. Nikulin, H. D. Mansvelder, and K. Linkenkaer-Hansen,
-“Detrended fluctuation analysis: A scale-free view on neuronal
-oscillations,” Frontiers in Physiology, vol. 30, 2012.</p>
-</div>
-</div>
-<dl>
-<dt>Reference code:</dt><dd><div role="list" class="citation-list">
-<div class="citation" id="dfa-a" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>dfa_a<span class="fn-bracket">]</span></span>
-<p>Peter Jurica, “Introduction to MDFA in Python”,
-url: <a class="reference external" href="http://bsp.brain.riken.jp/~juricap/mdfa/mdfaintro.html">http://bsp.brain.riken.jp/~juricap/mdfa/mdfaintro.html</a></p>
-</div>
-<div class="citation" id="dfa-b" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>dfa_b<span class="fn-bracket">]</span></span>
-<p>JE Mietus, “dfa”,
-url: <a class="reference external" href="https://www.physionet.org/physiotools/dfa/dfa-1.htm">https://www.physionet.org/physiotools/dfa/dfa-1.htm</a></p>
-</div>
-<div class="citation" id="dfa-c" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>dfa_c<span class="fn-bracket">]</span></span>
-<p>“DFA” function in R package “fractal”</p>
-</div>
-</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>array-like</em><em> of </em><em>float</em>) – time series</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Kwargs:</dt><dd><dl class="simple">
-<dt>nvals (iterable of int):</dt><dd><p>subseries sizes at which to calculate fluctuation
-(default: logarithmic_n(4, 0.1*len(data), 1.2))</p>
-</dd>
-<dt>overlap (boolean):</dt><dd><p>if True, the windows W_(n,i) will have a 50% overlap,
-otherwise non-overlapping windows will be used</p>
-</dd>
-<dt>order (int):</dt><dd><p>(polynomial) order of trend to remove</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the estimate alpha for the Hurst parameter (alpha &lt; 1: stationary
-process similar to fractional Gaussian noise with H = alpha,
-alpha &gt; 1: non-stationary process similar to fractional Brownian
-motion with H = alpha - 1)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -655,131 +1131,6 @@ the dynamical equation</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">max_lyap</span> <span class="o">=</span> <span class="n">dysts</span><span class="o">.</span><span class="n">lyapunov_exponent_naive</span><span class="p">(</span><span class="n">eq</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dysts.analysis.max_lyapunov_exponent_rosenstein">
-<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">max_lyapunov_exponent_rosenstein</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_tsep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RANSAC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.max_lyapunov_exponent_rosenstein" title="Link to this definition">¶</a></dt>
-<dd><p>Adapted from the nolds Python library:
-<a class="reference external" href="https://github.com/CSchoel/nolds/blob/master/nolds/measures.py">https://github.com/CSchoel/nolds/blob/master/nolds/measures.py</a></p>
-<p>Estimates the largest Lyapunov exponent using the algorithm of Rosenstein
-et al. <a class="reference internal" href="#lr-1" id="id1"><span>[lr_1]</span></a>.
-Explanation of Lyapunov exponents:</p>
-<blockquote>
-<div><p>See lyap_e.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Explanation of the algorithm:</dt><dd><p>The algorithm of Rosenstein et al. is only able to recover the largest
-Lyapunov exponent, but behaves rather robust to parameter choices.
-The idea for the algorithm relates closely to the definition of Lyapunov
-exponents. First, the dynamics of the data are reconstructed using a delay
-embedding method with a lag, such that each value x_i of the data is mapped
-to the vector
-X_i = [x_i, x_(i+lag), x_(i+2*lag), …, x_(i+(emb_dim-1) * lag)]
-For each such vector X_i, we find the closest neighbor X_j using the
-euclidean distance. We know that as we follow the trajectories from X_i and
-X_j in time in a chaotic system the distances between X_(i+k) and X_(j+k)
-denoted as d_i(k) will increase according to a power law
-d_i(k) = c * e^(lambda * k) where lambda is a good approximation of the
-highest Lyapunov exponent, because the exponential expansion along the axis
-associated with this exponent will quickly dominate the expansion or
-contraction along other axes.
-To calculate lambda, we look at the logarithm of the distance trajectory,
-because log(d_i(k)) = log(c) + lambda * k. This gives a set of lines
-(one for each index i) whose slope is an approximation of lambda. We
-therefore extract the mean log trajectory d’(k) by taking the mean of
-log(d_i(k)) over all orbit vectors X_i. We then fit a straight line to
-the plot of d’(k) versus k. The slope of the line gives the desired
-parameter lambda.</p>
-</dd>
-<dt>Method for choosing min_tsep:</dt><dd><p>Usually we want to find neighbors between points that are close in phase
-space but not too close in time, because we want to avoid spurious
-correlations between the obtained trajectories that originate from temporal
-dependencies rather than the dynamic properties of the system. Therefore it
-is critical to find a good value for min_tsep. One rather plausible
-estimate for this value is to set min_tsep to the mean period of the
-signal, which can be obtained by calculating the mean frequency using the
-fast fourier transform. This procedure is used by default if the user sets
-min_tsep = None.</p>
-</dd>
-<dt>Method for choosing lag:</dt><dd><p>Another parameter that can be hard to choose by instinct alone is the lag
-between individual values in a vector of the embedded orbit. Here,
-Rosenstein et al. suggest to set the lag to the distance where the
-autocorrelation function drops below 1 - 1/e times its original (maximal)
-value. This procedure is used by default if the user sets lag = None.</p>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="lr-1" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">lr_1</a><span class="fn-bracket">]</span></span>
-<p>M. T. Rosenstein, J. J. Collins, and C. J. De Luca,
-“A practical method for calculating largest Lyapunov exponents from
-small data sets,” Physica D: Nonlinear Phenomena, vol. 65, no. 1,
-pp. 117–134, 1993.</p>
-</div>
-</div>
-<dl>
-<dt>Reference Code:</dt><dd><div role="list" class="citation-list">
-<div class="citation" id="lr-a" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>lr_a<span class="fn-bracket">]</span></span>
-<p>mirwais, “Largest Lyapunov Exponent with Rosenstein’s Algorithm”,
-url: <a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/38424-largest-lyapunov-exponent-with-rosenstein-s-algorithm">http://www.mathworks.com/matlabcentral/fileexchange/38424-largest-lyapunov-exponent-with-rosenstein-s-algorithm</a></p>
-</div>
-<div class="citation" id="lr-b" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>lr_b<span class="fn-bracket">]</span></span>
-<p>Shapour Mohammadi, “LYAPROSEN: MATLAB function to calculate
-Lyapunov exponent”,
-url: <a class="reference external" href="https://ideas.repec.org/c/boc/bocode/t741502.html">https://ideas.repec.org/c/boc/bocode/t741502.html</a></p>
-</div>
-</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>iterable</em><em> of </em><em>float</em>) – (one-dimensional) time series</p>
-</dd>
-</dl>
-<dl>
-<dt>Kwargs:</dt><dd><blockquote>
-<div><dl class="simple">
-<dt>emb_dim (int):</dt><dd><p>embedding dimension for delay embedding</p>
-</dd>
-<dt>lag (float):</dt><dd><p>lag for delay embedding</p>
-</dd>
-<dt>min_tsep (float):</dt><dd><p>minimal temporal separation between two “neighbors” (default:
-find a suitable value by calculating the mean period of the data)</p>
-</dd>
-<dt>tau (float):</dt><dd><p>step size between data points in the time series in seconds
-(normalization scaling factor for exponents)</p>
-</dd>
-<dt>min_neighbors (int):</dt><dd><p>if lag=None, the search for a suitable lag will be stopped when the
-number of potential neighbors for a vector drops below min_neighbors</p>
-</dd>
-<dt>trajectory_len (int):</dt><dd><p>the time (in number of data points) to follow the distance
-trajectories between two neighboring points</p>
-</dd>
-<dt>fit (str):</dt><dd><p>the fitting method to use for the line fit, either ‘poly’ for normal
-least squares polynomial fitting or ‘RANSAC’ for RANSAC-fitting which
-is more robust to outliers</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>fit_offset (int):</dt><dd><p>neglect the first fit_offset steps when fitting</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an estimate of the largest Lyapunov exponent (a positive exponent is
-a strong indicator for chaos)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
