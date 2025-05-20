@@ -6,3 +6,4 @@ dependencies on the rest of the package.
 from .integration_utils import *
 from .native_utils import *
 from .utils import *
+from .data_utils import *
