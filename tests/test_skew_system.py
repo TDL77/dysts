@@ -23,7 +23,7 @@ from dysts.attractor import (
     check_zero_one_test,
 )
 from dysts.base import DynSys, SkewProduct
-from dysts.coupling_maps import (
+from dysts.coupling import (
     RandomAdditiveCouplingMap,
 )
 from dysts.generator import DynSysSampler

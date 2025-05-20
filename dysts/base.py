@@ -12,7 +12,7 @@ import numpy as np
 from numpy.typing import ArrayLike
 from scipy.interpolate import interp1d
 
-from .coupling_maps import RandomAdditiveCouplingMap
+from .coupling import RandomAdditiveCouplingMap
 from .utils import cast_to_numpy, ddeint, has_module, integrate_dyn, standardize_ts
 
 logger = logging.getLogger(__name__)

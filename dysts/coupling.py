@@ -350,7 +350,7 @@ class RandomActivatedCouplingMap(BaseCouplingMap):
             act_grad = self.driver_activation(
                 self.driver_scale * driver,
                 deriv=True,  # type: ignore
-            )  # TODO: make explicit, this is from the definitions in coupling_maps.py
+            )  # TODO: make explicit, this is from e.g. _tanh function
             return self.driver_scale * act_grad[:, np.newaxis] * D
         elif wrt == "response":
             R = self.coupling_matrix[:, self.driver_dim :]  # type: ignore
