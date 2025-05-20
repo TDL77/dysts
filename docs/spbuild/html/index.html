@@ -37,23 +37,1547 @@
 <p>The API reference for the dysts repository: <a class="reference external" href="https://github.com/williamgilpin/dysts">https://github.com/williamgilpin/dysts</a></p>
 <div class="toctree-wrapper compound">
 </div>
-<section id="base-classes">
-<h2>Base Classes<a class="headerlink" href="#base-classes" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.base">
+<span id="base-classes"></span><h2>Base Classes<a class="headerlink" href="#module-dysts.base" title="Link to this heading">¶</a></h2>
+<p>Dynamical systems in Python</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.base.</span></span><span class="sig-name descname"><span class="pre">BaseDyn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('parameters',</span> <span class="pre">('dimension',</span> <span class="pre">'embedding_dimension'))</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.BaseDyn" title="Link to this definition">¶</a></dt>
+<dd><p>A base class for dynamical systems</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.has_jacobian">
+<span class="sig-name descname"><span class="pre">has_jacobian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#dysts.base.BaseDyn.has_jacobian" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the subclass has implemented the _jac method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.load_system_metadata">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_system_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.base.BaseDyn.load_system_metadata" title="Link to this definition">¶</a></dt>
+<dd><p>Load data from a JSON file</p>
+<p>Returns None if the system name is not found</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.load_trajectory">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.BaseDyn.load_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Load a precomputed trajectory for the dynamical system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<em>str</em>) – Path to the data file, of format {name}.json.gz</p></li>
+<li><p><strong>standardize</strong> (<em>bool</em>) – Standardize the output time series.</p></li>
+<li><p><strong>return_times</strong> (<em>bool</em>) – Whether to return the timepoints at which the solution
+was computed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A T x D trajectory
+tpts, sol (ndarray): T x 1 timepoint array, and T x D trajectory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sol (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.make_trajectory">
+<span class="sig-name descname"><span class="pre">make_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.BaseDyn.make_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Make a trajectory for the dynamical system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.transform_ic">
+<span class="sig-name descname"><span class="pre">transform_ic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#dysts.base.BaseDyn.transform_ic" title="Link to this definition">¶</a></dt>
+<dd><p>Updates the initial condition via a transform function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.BaseDyn.transform_params">
+<span class="sig-name descname"><span class="pre">transform_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#dysts.base.BaseDyn.transform_params" title="Link to this definition">¶</a></dt>
+<dd><p>Updates the current parameter list via a transform function</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.base.DynMap">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.base.</span></span><span class="sig-name descname"><span class="pre">DynMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/Users/william/program_repos/dysts/data/discrete_maps.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynMap" title="Link to this definition">¶</a></dt>
+<dd><p>A discrete map dynamical system class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynMap.make_trajectory">
+<span class="sig-name descname"><span class="pre">make_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_cond</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.base.DynMap.make_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a fixed-length trajectory with default parameters and initial condition(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – The length of each trajectory.</p></li>
+<li><p><strong>init_cond</strong> (<em>Optional</em><em>[</em><em>np.ndarray</em><em>]</em>) – Initial conditions. If None, use default.</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em>) – Whether to reverse the trajectory.</p></li>
+<li><p><strong>return_times</strong> (<em>bool</em>) – Whether to return the timepoints of the solution.</p></li>
+<li><p><strong>standardize</strong> (<em>bool</em>) – Whether to standardize the output time series.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If return_times is False, returns the trajectory.
+If return_times is True, returns a tuple of (timepoints, trajectory).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynMap.rhs">
+<span class="sig-name descname"><span class="pre">rhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynMap.rhs" title="Link to this definition">¶</a></dt>
+<dd><p>The right hand side of a dynamical map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynMap.rhs_inv">
+<span class="sig-name descname"><span class="pre">rhs_inv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynMap.rhs_inv" title="Link to this definition">¶</a></dt>
+<dd><p>The inverse of the right hand side of a dynamical map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.base.DynSys">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.base.</span></span><span class="sig-name descname"><span class="pre">DynSys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/Users/william/program_repos/dysts/data/chaotic_attractors.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_lyapunov_estimated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynSys" title="Link to this definition">¶</a></dt>
+<dd><p>A continuous dynamical system base class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynSys.jac">
+<span class="sig-name descname"><span class="pre">jac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynSys.jac" title="Link to this definition">¶</a></dt>
+<dd><p>The Jacobian of the dynamical system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynSys.make_trajectory">
+<span class="sig-name descname"><span class="pre">make_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_cond</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postprocess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Fourier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Radau'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.base.DynSys.make_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a fixed-length trajectory for the dynamical system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Total number of trajectory points.</p></li>
+<li><p><strong>dt</strong> – Time step for integration. Defaults to 1e-3 or system’s default if set.</p></li>
+<li><p><strong>init_cond</strong> – Initial conditions. If None, uses system’s default.</p></li>
+<li><p><strong>resample</strong> – Whether to resample trajectory to match dominant Fourier components.</p></li>
+<li><p><strong>pts_per_period</strong> – Number of points per period if resampling.</p></li>
+<li><p><strong>return_times</strong> – If True, return time points along with trajectory.</p></li>
+<li><p><strong>standardize</strong> – If True, standardize the output time series.</p></li>
+<li><p><strong>postprocess</strong> – If True, apply coordinate conversions and rescalings.</p></li>
+<li><p><strong>noise</strong> – Stochasticity level in integrated dynamics (corresponds to Brownian motion).</p></li>
+<li><p><strong>timescale</strong> – Timescale for resampling. “Fourier” (default) or “Lyapunov”.</p></li>
+<li><p><strong>method</strong> – Integration method.</p></li>
+<li><p><strong>random_seed</strong> – Seed for random number generation.</p></li>
+<li><p><strong>rtol</strong> – Relative tolerance for integration.</p></li>
+<li><p><strong>atol</strong> – Absolute tolerance for integration.</p></li>
+<li><p><strong>verbose</strong> – Whether to trigger warnings.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments for integration routine.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>np.ndarray: T x D trajectory array.
+If return_times is True:</p>
+<blockquote>
+<div><p>Tuple[np.ndarray, np.ndarray]: T x 1 time point array and T x D trajectory array.</p>
+</div></blockquote>
+<p>None: If no complete trajectories are found.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If return_times is False</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid timescale is provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynSys.rhs">
+<span class="sig-name descname"><span class="pre">rhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynSys.rhs" title="Link to this definition">¶</a></dt>
+<dd><p>The right hand side of a dynamical equation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.base.DynSysDelay">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.base.</span></span><span class="sig-name descname"><span class="pre">DynSysDelay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/Users/william/program_repos/dysts/data/chaotic_attractors.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_lyapunov_estimated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynSysDelay" title="Link to this definition">¶</a></dt>
+<dd><p>A delayed differential equation object. Uses a exposed fork of ddeint
+The delay timescale is assumed to be the “tau” field. The embedding dimensions are set to a
+default value, but delay equations are infinite dimensional.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynSysDelay.delayed_rhs">
+<span class="sig-name descname"><span class="pre">delayed_rhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.base.DynSysDelay.delayed_rhs" title="Link to this definition">¶</a></dt>
+<dd><p>The right hand side of a dynamical equation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.base.DynSysDelay.make_trajectory">
+<span class="sig-name descname"><span class="pre">make_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_cond</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Fourier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.base.DynSysDelay.make_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a fixed-length trajectory with default timestep, parameters, and
+initial conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – the total number of trajectory points</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Not used. Currently Euler is the only option here</p></li>
+<li><p><strong>noise</strong> (<em>float</em>) – The amplitude of brownian forcing</p></li>
+<li><p><strong>resample</strong> (<em>bool</em>) – whether to resample trajectories to have matching dominant
+Fourier components</p></li>
+<li><p><strong>pts_per_period</strong> (<em>int</em>) – if resampling, the number of points per period</p></li>
+<li><p><strong>standardize</strong> (<em>bool</em>) – Standardize the output time series.</p></li>
+<li><p><strong>timescale</strong> (<em>str</em>) – The timescale to use for resampling. “Fourier” (default) uses
+the dominant significant Fourier timescale, estimated using the periodogram
+of the system and surrogates. “Lyapunov” uses the Lypunov timescale of
+the system.</p></li>
+<li><p><strong>return_times</strong> (<em>bool</em>) – Whether to return the timepoints at which the solution
+was computed</p></li>
+<li><p><strong>postprocess</strong> (<em>bool</em>) – Whether to apply coordinate conversions and other domain-specific
+rescalings to the integration coordinates</p></li>
+<li><p><strong>embedding_dim</strong> (<em>int</em>) – Optionally augment solution with delay embedded trajectories.
+If equation is multi-dimensional with dimension d, then this will return a flattened
+delay embedding of shape (n, d*embedding_dim) where each consecutive (n, d) block
+will be a trajectory for a different delay parameter.</p></li>
+<li><p><strong>history_function</strong> (<em>callable</em>) – Function for specifying past conditions i.e.
+points for t &lt; 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.base.staticjit">
+<span class="sig-prename descclassname"><span class="pre">dysts.base.</span></span><span class="sig-name descname"><span class="pre">staticjit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="headerlink" href="#dysts.base.staticjit" title="Link to this definition">¶</a></dt>
+<dd><p>Decorator to apply numba’s njit decorator to a static method</p>
+</dd></dl>
+
 </section>
-<section id="utilities">
-<h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-dysts.utils" title="Link to this heading">¶</a></h2>
+<p>Helper utilities for working with time series arrays. This module is intended to have no
+dependencies on the rest of the package.</p>
 </section>
-<section id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.analysis">
+<span id="analysis"></span><h2>Analysis<a class="headerlink" href="#module-dysts.analysis" title="Link to this heading">¶</a></h2>
+<p>Functions that act on DynSys or DynMap objects</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.calculate_lyapunov_exponent">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_lyapunov_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.calculate_lyapunov_exponent" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the lyapunov exponent of two multidimensional trajectories using
+simple linear regression based on the log-transformed separation of the
+trajectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj1</strong> (<em>np.ndarray</em>) – trajectory 1 with shape (n_timesteps, n_dimensions)</p></li>
+<li><p><strong>traj2</strong> (<em>np.ndarray</em>) – trajectory 2 with shape (n_timesteps, n_dimensions)</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – time step between timesteps</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>lyapunov exponent</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.compute_timestep">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">compute_timestep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dysts.base.DynSys" title="dysts.base.DynSys"><span class="pre">DynSys</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transient_fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Fourier'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.analysis.compute_timestep" title="Link to this definition">¶</a></dt>
+<dd><p>Given a dynamical system object, find the integration timestep based on the largest
+signficant frequency</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<a class="reference internal" href="#dysts.base.DynSys" title="dysts.base.DynSys"><em>DynSys</em></a>) – A dynamical systems object.</p></li>
+<li><p><strong>total_length</strong> (<em>int</em>) – The total trajectory length to use to determine timescales.</p></li>
+<li><p><strong>transient_fraction</strong> (<em>float</em>) – The fraction of a trajectory to discard as transient</p></li>
+<li><p><strong>num_iters</strong> (<em>int</em>) – The number of refinements to the timestep</p></li>
+<li><p><strong>pts_per_period</strong> (<em>int</em>) – The target integration timestep relative to the signal.</p></li>
+<li><p><strong>visualize</strong> (<em>bool</em>) – Whether to plot timestep versus time, in order to identify problems
+with the procedure</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>dt (float): The best integration timestep
+period (float, optional): The dominant timescale in the signal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.corr_gpdim">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">corr_gpdim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">register</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.corr_gpdim" title="Link to this definition">¶</a></dt>
+<dd><p>Given two multivariate time series, estimate their similarity using the cross
+Grassberger-Procaccia dimension</p>
+<p>This quantity is defined as the cross-correlation between the two time series
+normalized by the product of the Grassberger-Procaccia dimension of each time series.
+np.sqrt(&lt;ox oy&gt; / ox oy)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj1</strong> (<em>np.array</em>) – T x D, where T is the number of timepoints, and D
+is the number of dimensions</p></li>
+<li><p><strong>traj2</strong> (<em>np.array</em>) – T x D, where T is the number of timepoints, and D
+is the number of dimensions</p></li>
+<li><p><strong>register</strong> (<em>bool</em>) – Whether to register the two time series before computing the
+cross-correlation</p></li>
+<li><p><strong>standardize</strong> (<em>bool</em>) – Whether to standardize the time series before computing the
+cross-correlation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cross-correlation between the two time series</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.dfa">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">dfa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.dfa" title="Link to this definition">¶</a></dt>
+<dd><p>Adapted from the nolds Python library:
+<a class="reference external" href="https://github.com/CSchoel/nolds/blob/master/nolds/measures.py">https://github.com/CSchoel/nolds/blob/master/nolds/measures.py</a></p>
+<p>Performs a detrended fluctuation analysis (DFA) on the given data
+Recommendations for parameter settings by Hardstone et al.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>nvals should be equally spaced on a logarithmic scale so that each window</dt><dd><p>scale hase the same weight</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>min(nvals) &lt; 4 does not make much sense as fitting a polynomial (even if</dt><dd><p>it is only of order 1) to 3 or less data points is very prone.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>max(nvals) &gt; len(data) / 10 does not make much sense as we will then have</dt><dd><p>less than 10 windows to calculate the average fluctuation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>use overlap=True to obtain more windows and therefore better statistics</dt><dd><p>(at an increased computational cost)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Explanation of DFA:</dt><dd><p>Detrended fluctuation analysis, much like the Hurst exponent, is used to
+find long-term statistical dependencies in time series.
+The idea behind DFA originates from the definition of self-affine
+processes. A process X is said to be self-affine if the standard deviation
+of the values within a window of length n changes with the window length
+factor L in a power law:
+std(X,L * n) = L^H * std(X, n)
+where std(X, k) is the standard deviation of the process X calculated over
+windows of size k. In this equation, H is called the Hurst parameter, which
+behaves indeed very similar to the Hurst exponent.
+Like the Hurst exponent, H can be obtained from a time series by
+calculating std(X,n) for different n and fitting a straight line to the
+plot of log(std(X,n)) versus log(n).
+To calculate a single std(X,n), the time series is split into windows of
+equal length n, so that the ith window of this size has the form
+W_(n,i) = [x_i, x_(i+1), x_(i+2), … x_(i+n-1)]
+The value std(X,n) is then obtained by calculating std(W_(n,i)) for each i
+and averaging the obtained values over i.
+The aforementioned definition of self-affinity, however, assumes that the
+process is    non-stationary (i.e. that the standard deviation changes over
+time) and it is highly influenced by local and global trends of the time
+series.
+To overcome these problems, an estimate alpha of H is calculated by using a
+“walk” or “signal profile” instead of the raw time series. This walk is
+obtained by substracting the mean and then taking the cumulative sum of the
+original time series. The local trends are removed for each window
+separately by fitting a polynomial p_(n,i) to the window W_(n,i) and then
+calculating W’_(n,i) = W_(n,i) - p_(n,i) (element-wise substraction).
+We then calculate std(X,n) as before only using the “detrended” window
+W’_(n,i) instead of W_(n,i). Instead of H we obtain the parameter alpha
+from the line fitting.
+For alpha &lt; 1 the underlying process is stationary and can be modelled as
+fractional Gaussian noise with H = alpha. This means for alpha = 0.5 we
+have no correlation or “memory”, for 0.5 &lt; alpha &lt; 1 we have a memory with
+positive correlation and for alpha &lt; 0.5 the correlation is negative.
+For alpha &gt; 1 the underlying process is non-stationary and can be modeled
+as fractional Brownian motion with H = alpha - 1.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="dfa-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>dfa_1<span class="fn-bracket">]</span></span>
+<p>C.-K. Peng, S. V. Buldyrev, S. Havlin, M. Simons,
+H. E. Stanley, and A. L. Goldberger, “Mosaic organization of
+DNA nucleotides,” Physical Review E, vol. 49, no. 2, 1994.</p>
+</div>
+<div class="citation" id="dfa-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>dfa_2<span class="fn-bracket">]</span></span>
+<p>R. Hardstone, S.-S. Poil, G. Schiavone, R. Jansen,
+V. V. Nikulin, H. D. Mansvelder, and K. Linkenkaer-Hansen,
+“Detrended fluctuation analysis: A scale-free view on neuronal
+oscillations,” Frontiers in Physiology, vol. 30, 2012.</p>
+</div>
+</div>
+<dl>
+<dt>Reference code:</dt><dd><div role="list" class="citation-list">
+<div class="citation" id="dfa-a" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>dfa_a<span class="fn-bracket">]</span></span>
+<p>Peter Jurica, “Introduction to MDFA in Python”,
+url: <a class="reference external" href="http://bsp.brain.riken.jp/~juricap/mdfa/mdfaintro.html">http://bsp.brain.riken.jp/~juricap/mdfa/mdfaintro.html</a></p>
+</div>
+<div class="citation" id="dfa-b" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>dfa_b<span class="fn-bracket">]</span></span>
+<p>JE Mietus, “dfa”,
+url: <a class="reference external" href="https://www.physionet.org/physiotools/dfa/dfa-1.htm">https://www.physionet.org/physiotools/dfa/dfa-1.htm</a></p>
+</div>
+<div class="citation" id="dfa-c" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>dfa_c<span class="fn-bracket">]</span></span>
+<p>“DFA” function in R package “fractal”</p>
+</div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>array-like</em><em> of </em><em>float</em>) – time series</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>nvals (iterable of int):</dt><dd><p>subseries sizes at which to calculate fluctuation
+(default: logarithmic_n(4, 0.1*len(data), 1.2))</p>
+</dd>
+<dt>overlap (boolean):</dt><dd><p>if True, the windows W_(n,i) will have a 50% overlap,
+otherwise non-overlapping windows will be used</p>
+</dd>
+<dt>order (int):</dt><dd><p>(polynomial) order of trend to remove</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the estimate alpha for the Hurst parameter (alpha &lt; 1: stationary
+process similar to fractional Gaussian noise with H = alpha,
+alpha &gt; 1: non-stationary process similar to fractional Brownian
+motion with H = alpha - 1)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.estimate_powerlaw">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">estimate_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.estimate_powerlaw" title="Link to this definition">¶</a></dt>
+<dd><p>Given a 1D array of continuous-valued data, estimate the power law exponent using the
+maximum likelihood estimator proposed by Clauset, Shalizi, Newman (2009).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data0</strong> (<em>np.ndarray</em>) – An array of continuous-valued data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The estimated power law exponent</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.find_lyapunov_exponents">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">find_lyapunov_exponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_tpts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.find_lyapunov_exponents" title="Link to this definition">¶</a></dt>
+<dd><p>Given a dynamical system, compute its spectrum of Lyapunov exponents.
+:param model: the right hand side of a differential equation, in format</p>
+<blockquote>
+<div><p>func(X, t)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj_length</strong> (<em>int</em>) – the length of each trajectory used to calulate Lyapunov
+exponents</p></li>
+<li><p><strong>pts_per_period</strong> (<em>int</em>) – the sampling density of the trajectory</p></li>
+<li><p><strong>kwargs</strong> – additional keyword arguments to pass to the model’s make_trajectory
+method</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of computed Lyapunov exponents</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>final_lyap (ndarray)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="simple">
+<dt>Christiansen &amp; Rugh (1997). Computing Lyapunov spectra with continuous</dt><dd><p>Gram-Schmidt orthonormalization</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">dysts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">dysts</span><span class="o">.</span><span class="n">Lorenz</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lyap</span> <span class="o">=</span> <span class="n">dysts</span><span class="o">.</span><span class="n">find_lyapunov_exponents</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">pts_per_period</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lyap</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.gp_dim">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">gp_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rvals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.gp_dim" title="Link to this definition">¶</a></dt>
+<dd><p>Estimate the Grassberger-Procaccia dimension for a numpy array using the
+empirical correlation integral.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>np.array</em>) – T x D, where T is the number of datapoints/timepoints, and D
+is the number of features/dimensions</p></li>
+<li><p><strong>y_data</strong> (<em>np.array</em><em>, </em><em>Optional</em>) – A second dataset of shape T2 x D, for
+computing cross-correlation.</p></li>
+<li><p><strong>rvals</strong> (<em>np.array</em>) – A list of radii</p></li>
+<li><p><strong>nmax</strong> (<em>int</em>) – The number of points at which to evaluate the correlation integral</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The discrete bins at which the correlation integral is</dt><dd><p>estimated</p>
+</dd>
+</dl>
+<p>corr_sum (np.array): The estimates of the correlation integral at each bin</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rvals (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.gpdistance">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">gpdistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standardize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">register</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.gpdistance" title="Link to this definition">¶</a></dt>
+<dd><p>Given two multivariate time series, estimate their similarity using the cross
+Grassberger-Procaccia distance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj1</strong> (<em>np.array</em>) – T x D, where T is the number of timepoints, and D
+is the number of dimensions</p></li>
+<li><p><strong>traj2</strong> (<em>np.array</em>) – T x D, where T is the number of timepoints, and D
+is the number of dimensions</p></li>
+<li><p><strong>register</strong> (<em>bool</em>) – Whether to register the two time series before computing the
+cross-correlation</p></li>
+<li><p><strong>standardize</strong> (<em>bool</em>) – Whether to standardize the time series before computing the
+cross-correlation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.kaplan_yorke_dimension">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">kaplan_yorke_dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.kaplan_yorke_dimension" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Kaplan-Yorke dimension, given a list of
+Lyapunov exponents</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.logarithmic_n">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">logarithmic_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.logarithmic_n" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of values by successively multiplying a minimum value min_n by
+a factor &gt; 1 until a maximum value max_n is reached. Non-integer results are rounded
+down.
+Based on a similar function in the nolds Python library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_n</strong> (<em>float</em>) – minimum value (must be &lt; max_n)</p></li>
+<li><p><strong>max_n</strong> (<em>float</em>) – maximum value (must be &gt; min_n)</p></li>
+<li><p><strong>factor</strong> (<em>float</em>) – factor used to increase min_n (must be &gt; 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>min_n, min_n * factor, min_n * factor^2, … min_n * factor^i &lt; max_n
+without duplicates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of integers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.max_lyapunov_exponent">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">max_lyapunov_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dysts.base.DynSys" title="dysts.base.DynSys"><span class="pre">DynSys</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_walltime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.max_lyapunov_exponent" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the lyapunov spectrum of the system using a naive method based on the
+log-transformed separation of the trajectories over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eq</strong> (<em>dysts.DynSys</em>) – equation to calculate the lyapunov spectrum of</p></li>
+<li><p><strong>rtol</strong> (<em>float</em>) – relative tolerance for the separation of the trajectories</p></li>
+<li><p><strong>atol</strong> (<em>float</em>) – absolute tolerance for the separation of the trajectories</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – number of initial conditions to sample</p></li>
+<li><p><strong>traj_length</strong> (<em>int</em>) – length of the trajectories to sample. This should be long
+enough to ensure that most trajectories explore the attractor.</p></li>
+<li><p><strong>max_walltime</strong> (<em>float</em>) – maximum walltime in seconds to spend on the calculation
+of a given trajectory. If the calculation takes longer than this, the
+trajectory is discarded and a new one is sampled.</p></li>
+<li><p><strong>**kwargs</strong> – keyword arguments to pass to the sample / make_trajectory method of
+the dynamical equation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>largest lyapunov exponent</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">dysts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eq</span> <span class="o">=</span> <span class="n">dysts</span><span class="o">.</span><span class="n">Lorenz</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_lyap</span> <span class="o">=</span> <span class="n">dysts</span><span class="o">.</span><span class="n">lyapunov_exponent_naive</span><span class="p">(</span><span class="n">eq</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.max_lyapunov_exponent_rosenstein">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">max_lyapunov_exponent_rosenstein</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_tsep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RANSAC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.max_lyapunov_exponent_rosenstein" title="Link to this definition">¶</a></dt>
+<dd><p>Adapted from the nolds Python library:
+<a class="reference external" href="https://github.com/CSchoel/nolds/blob/master/nolds/measures.py">https://github.com/CSchoel/nolds/blob/master/nolds/measures.py</a></p>
+<p>Estimates the largest Lyapunov exponent using the algorithm of Rosenstein
+et al. <a class="reference internal" href="#lr-1" id="id1"><span>[lr_1]</span></a>.
+Explanation of Lyapunov exponents:</p>
+<blockquote>
+<div><p>See lyap_e.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Explanation of the algorithm:</dt><dd><p>The algorithm of Rosenstein et al. is only able to recover the largest
+Lyapunov exponent, but behaves rather robust to parameter choices.
+The idea for the algorithm relates closely to the definition of Lyapunov
+exponents. First, the dynamics of the data are reconstructed using a delay
+embedding method with a lag, such that each value x_i of the data is mapped
+to the vector
+X_i = [x_i, x_(i+lag), x_(i+2*lag), …, x_(i+(emb_dim-1) * lag)]
+For each such vector X_i, we find the closest neighbor X_j using the
+euclidean distance. We know that as we follow the trajectories from X_i and
+X_j in time in a chaotic system the distances between X_(i+k) and X_(j+k)
+denoted as d_i(k) will increase according to a power law
+d_i(k) = c * e^(lambda * k) where lambda is a good approximation of the
+highest Lyapunov exponent, because the exponential expansion along the axis
+associated with this exponent will quickly dominate the expansion or
+contraction along other axes.
+To calculate lambda, we look at the logarithm of the distance trajectory,
+because log(d_i(k)) = log(c) + lambda * k. This gives a set of lines
+(one for each index i) whose slope is an approximation of lambda. We
+therefore extract the mean log trajectory d’(k) by taking the mean of
+log(d_i(k)) over all orbit vectors X_i. We then fit a straight line to
+the plot of d’(k) versus k. The slope of the line gives the desired
+parameter lambda.</p>
+</dd>
+<dt>Method for choosing min_tsep:</dt><dd><p>Usually we want to find neighbors between points that are close in phase
+space but not too close in time, because we want to avoid spurious
+correlations between the obtained trajectories that originate from temporal
+dependencies rather than the dynamic properties of the system. Therefore it
+is critical to find a good value for min_tsep. One rather plausible
+estimate for this value is to set min_tsep to the mean period of the
+signal, which can be obtained by calculating the mean frequency using the
+fast fourier transform. This procedure is used by default if the user sets
+min_tsep = None.</p>
+</dd>
+<dt>Method for choosing lag:</dt><dd><p>Another parameter that can be hard to choose by instinct alone is the lag
+between individual values in a vector of the embedded orbit. Here,
+Rosenstein et al. suggest to set the lag to the distance where the
+autocorrelation function drops below 1 - 1/e times its original (maximal)
+value. This procedure is used by default if the user sets lag = None.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="lr-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">lr_1</a><span class="fn-bracket">]</span></span>
+<p>M. T. Rosenstein, J. J. Collins, and C. J. De Luca,
+“A practical method for calculating largest Lyapunov exponents from
+small data sets,” Physica D: Nonlinear Phenomena, vol. 65, no. 1,
+pp. 117–134, 1993.</p>
+</div>
+</div>
+<dl>
+<dt>Reference Code:</dt><dd><div role="list" class="citation-list">
+<div class="citation" id="lr-a" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>lr_a<span class="fn-bracket">]</span></span>
+<p>mirwais, “Largest Lyapunov Exponent with Rosenstein’s Algorithm”,
+url: <a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/38424-largest-lyapunov-exponent-with-rosenstein-s-algorithm">http://www.mathworks.com/matlabcentral/fileexchange/38424-largest-lyapunov-exponent-with-rosenstein-s-algorithm</a></p>
+</div>
+<div class="citation" id="lr-b" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>lr_b<span class="fn-bracket">]</span></span>
+<p>Shapour Mohammadi, “LYAPROSEN: MATLAB function to calculate
+Lyapunov exponent”,
+url: <a class="reference external" href="https://ideas.repec.org/c/boc/bocode/t741502.html">https://ideas.repec.org/c/boc/bocode/t741502.html</a></p>
+</div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>iterable</em><em> of </em><em>float</em>) – (one-dimensional) time series</p>
+</dd>
+</dl>
+<dl>
+<dt>Kwargs:</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>emb_dim (int):</dt><dd><p>embedding dimension for delay embedding</p>
+</dd>
+<dt>lag (float):</dt><dd><p>lag for delay embedding</p>
+</dd>
+<dt>min_tsep (float):</dt><dd><p>minimal temporal separation between two “neighbors” (default:
+find a suitable value by calculating the mean period of the data)</p>
+</dd>
+<dt>tau (float):</dt><dd><p>step size between data points in the time series in seconds
+(normalization scaling factor for exponents)</p>
+</dd>
+<dt>min_neighbors (int):</dt><dd><p>if lag=None, the search for a suitable lag will be stopped when the
+number of potential neighbors for a vector drops below min_neighbors</p>
+</dd>
+<dt>trajectory_len (int):</dt><dd><p>the time (in number of data points) to follow the distance
+trajectories between two neighboring points</p>
+</dd>
+<dt>fit (str):</dt><dd><p>the fitting method to use for the line fit, either ‘poly’ for normal
+least squares polynomial fitting or ‘RANSAC’ for RANSAC-fitting which
+is more robust to outliers</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>fit_offset (int):</dt><dd><p>neglect the first fit_offset steps when fitting</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimate of the largest Lyapunov exponent (a positive exponent is
+a strong indicator for chaos)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.rowwise_euclidean">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">rowwise_euclidean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.rowwise_euclidean" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the euclidean distance across rows</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.analysis.sample_initial_conditions">
+<span class="sig-prename descclassname"><span class="pre">dysts.analysis.</span></span><span class="sig-name descname"><span class="pre">sample_initial_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_to_sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts_per_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.analysis.sample_initial_conditions" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a random sample of initial conditions from a dynamical system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>callable</em>) – the right hand side of a differential equation, in format func(X, t)</p></li>
+<li><p><strong>points_to_sample</strong> (<em>int</em>) – the number of random initial conditions to sample</p></li>
+<li><p><strong>traj_length</strong> (<em>int</em>) – the total length of the reference trajectory from which points are drawn</p></li>
+<li><p><strong>pts_per_period</strong> (<em>int</em>) – the sampling density of the trajectory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The points with shape (points_to_sample, d)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sample_points (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="systems">
-<h2>Systems<a class="headerlink" href="#systems" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.systems">
+<span id="systems"></span><h2>Systems<a class="headerlink" href="#module-dysts.systems" title="Link to this heading">¶</a></h2>
+<p>Utilities for the implemented systems</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.systems.compute_trajectory_statistics">
+<span class="sig-prename descclassname"><span class="pre">dysts.systems.</span></span><span class="sig-name descname"><span class="pre">compute_trajectory_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.systems.compute_trajectory_statistics" title="Link to this definition">¶</a></dt>
+<dd><p>Compute mean and std for given trajectory list
+:param n: The number of timepoints to integrate
+:type n: int
+:param subset: A list of system names. Defaults to all continuous systems.</p>
+<blockquote>
+<div><p>Can also pass in <cite>sys_class</cite> as a kwarg to specify other system classes.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) – Path to save the computed statistics to a JSON file</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments passed to the integration routine</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.systems.get_attractor_list">
+<span class="sig-prename descclassname"><span class="pre">dysts.systems.</span></span><span class="sig-name descname"><span class="pre">get_attractor_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'continuous'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.systems.get_attractor_list" title="Link to this definition">¶</a></dt>
+<dd><p>Get names of implemented dynamical systems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sys_class</strong> – class of systems to get the name of - must
+be one of [‘continuous’, ‘continuous_no_delay’, ‘delay’, ‘discrete’]</p></li>
+<li><p><strong>exclude</strong> – list of systems to exclude, optional</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sorted list of systems belonging to sys_class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.systems.get_system_data">
+<span class="sig-prename descclassname"><span class="pre">dysts.systems.</span></span><span class="sig-name descname"><span class="pre">get_system_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'continuous'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.systems.get_system_data" title="Link to this definition">¶</a></dt>
+<dd><p>Get system data from the dedicated system class json files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sys_class</strong> – class of systems to get the name of - must
+be one of [‘continuous’, ‘continuous_no_delay’, ‘delay’, ‘discrete’]</p></li>
+<li><p><strong>exclude</strong> – list of systems to exclude, optional</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Data from json file filtered by sys_class as a dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.systems.make_trajectory_ensemble">
+<span class="sig-prename descclassname"><span class="pre">dysts.systems.</span></span><span class="sig-name descname"><span class="pre">make_trajectory_ensemble</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tqdm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_multiprocessing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dysts.base.BaseDyn" title="dysts.base.BaseDyn"><span class="pre">BaseDyn</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_fns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.systems.make_trajectory_ensemble" title="Link to this definition">¶</a></dt>
+<dd><p>Integrate multiple dynamical systems with identical settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – The number of timepoints to integrate</p></li>
+<li><p><strong>use_tqdm</strong> (<em>bool</em>) – Whether to use a progress bar</p></li>
+<li><p><strong>use_multiprocessing</strong> (<em>bool</em>) – Not yet implemented.</p></li>
+<li><p><strong>subset</strong> (<em>list</em>) – A list of system names or BaseDyn (e.g. custom dynamical systems). Defaults to all continuous systems.
+Can also pass in <cite>sys_class</cite> as a kwarg to specify other system classes.</p></li>
+<li><p><strong>event_fns</strong> (<em>list</em>) – <dl class="simple">
+<dt>A list of functions that can take the signatures:</dt><dd><ol class="arabic simple">
+<li><p>(system: BaseDyn) -&gt; (event_fn: Callable[[float, Array], float])</p></li>
+<li><p>(event_fn: Callable[[float, Array], float])</p></li>
+<li><p>() -&gt; (event_fn: Callable[[float, Array], float])</p></li>
+</ol>
+</dd>
+</dl>
+<p>If multiprocessing is used, the event functions must be of type 1 or 3 to avoid state persistence across processes.</p>
+</p></li>
+<li><p><strong>silent_errors</strong> (<em>bool</em>) – Whether to fail silently if an error occurs</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Integration options passed to each system’s make_trajectory() method</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing trajectories for each system</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all_sols (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="sampling">
-<h2>Sampling<a class="headerlink" href="#sampling" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.sampling">
+<span id="sampling"></span><h2>Sampling<a class="headerlink" href="#module-dysts.sampling" title="Link to this heading">¶</a></h2>
+<p>Example sampling functions for dysts</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.sampling.BaseSampler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.sampling.</span></span><span class="sig-name descname"><span class="pre">BaseSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.sampling.BaseSampler" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for any sampling-based transformations</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.sampling.BaseSampler.set_rng">
+<span class="sig-name descname"><span class="pre">set_rng</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#dysts.sampling.BaseSampler.set_rng" title="Link to this definition">¶</a></dt>
+<dd><p>Required for multiprocessing</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.sampling.GaussianInitialConditionSampler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.sampling.</span></span><span class="sig-name descname"><span class="pre">GaussianInitialConditionSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.sampling.GaussianInitialConditionSampler" title="Link to this definition">¶</a></dt>
+<dd><p>Sample gaussian perturbations for each initial condition in a given system list</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.sampling.GaussianParamSampler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.sampling.</span></span><span class="sig-name descname"><span class="pre">GaussianParamSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.sampling.GaussianParamSampler" title="Link to this definition">¶</a></dt>
+<dd><p>Sample gaussian perturbations for system parameters</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This is a MWE of a parameter transform</p></li>
+<li><p>Other parameter transforms should follow this dataclass template</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>random_seed</strong> – for random sampling</p></li>
+<li><p><strong>scale</strong> – std (isotropic) of gaussian used for sampling</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.sampling.OnAttractorInitCondSampler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.sampling.</span></span><span class="sig-name descname"><span class="pre">OnAttractorInitCondSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">random_seed:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">reference_traj_length:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4096,</span> <span class="pre">reference_traj_transient:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500,</span> <span class="pre">trajectory_cache:</span> <span class="pre">dict[str,</span> <span class="pre">~numpy.ndarray[tuple[int,</span> <span class="pre">...],</span> <span class="pre">~numpy.dtype[~numpy.float64]]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">events:</span> <span class="pre">list[~typing.Callable]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.sampling.OnAttractorInitCondSampler" title="Link to this definition">¶</a></dt>
+<dd><p>Sample points from the attractor of a system</p>
+<dl class="simple">
+<dt>Subtleties:</dt><dd><ul class="simple">
+<li><p>This is slow, it requires integrating each system with its default
+parameters before sampling from the attractor.</p></li>
+<li><p>The sampled initial conditions from this sampler are necessarily
+tied to the attractor defined by the default parameters.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reference_traj_length</strong> – Length of the reference trajectory to use for sampling ic on attractor.</p></li>
+<li><p><strong>reference_traj_transient</strong> – Transient length to ignore for the reference trajectory</p></li>
+<li><p><strong>trajectory_cache</strong> – Cache of reference trajectories for each system.</p></li>
+<li><p><strong>events</strong> – events to pass to solve_ivp</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="metrics">
-<h2>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">¶</a></h2>
+<section id="module-dysts.metrics">
+<span id="metrics"></span><h2>Metrics<a class="headerlink" href="#module-dysts.metrics" title="Link to this heading">¶</a></h2>
+<p>Metrics for comparing two time series. These metrics are included to faciliate
+benchmarking of the algorithms in this package while reducing dependencies.</p>
+<p>For more exhaustive sets of metrics, use the external <cite>tslearn</cite>, <cite>darts</cite>, or <cite>sktime</cite>
+libraries.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">GaussianMixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.GaussianMixture" title="Link to this definition">¶</a></dt>
+<dd><p>A Gaussian Mixture Model class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> (<em>list</em>) – A list of means for each component of the GMM.</p></li>
+<li><p><strong>covariances</strong> (<em>list</em>) – A list of covariance matrices for each component of the GMM.</p></li>
+<li><p><strong>weights</strong> (<em>list</em>) – A list of weights for each component of the GMM.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.means">
+<span class="sig-name descname"><span class="pre">means</span></span><a class="headerlink" href="#dysts.metrics.GaussianMixture.means" title="Link to this definition">¶</a></dt>
+<dd><p>An array of means for each component of the GMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.covariances">
+<span class="sig-name descname"><span class="pre">covariances</span></span><a class="headerlink" href="#dysts.metrics.GaussianMixture.covariances" title="Link to this definition">¶</a></dt>
+<dd><p>An array of covariance matrices for each component of the GMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#dysts.metrics.GaussianMixture.weights" title="Link to this definition">¶</a></dt>
+<dd><p>An array of weights for each component of the GMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.n_components">
+<span class="sig-name descname"><span class="pre">n_components</span></span><a class="headerlink" href="#dysts.metrics.GaussianMixture.n_components" title="Link to this definition">¶</a></dt>
+<dd><p>The number of components in the GMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.gaussians">
+<span class="sig-name descname"><span class="pre">gaussians</span></span><a class="headerlink" href="#dysts.metrics.GaussianMixture.gaussians" title="Link to this definition">¶</a></dt>
+<dd><p>A list of multivariate_normal objects, one for each component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dysts.metrics.GaussianMixture.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.GaussianMixture.sample" title="Link to this definition">¶</a></dt>
+<dd><p>Draw samples from the Gaussian Mixture Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_samples</strong> (<em>int</em>) – The number of samples to draw.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array of shape (n_samples, ndim) containing the drawn samples.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>samples (np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.are_broadcastable">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">are_broadcastable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#dysts.metrics.are_broadcastable" title="Link to this definition">¶</a></dt>
+<dd><p>Check if two numpy arrays are broadcastable.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.average_hellinger_distance">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">average_hellinger_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_gen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_freq_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#dysts.metrics.average_hellinger_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the average Hellinger distance between power spectra of two multivariate
+time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts_true</strong> (<em>np.ndarray</em>) – True time series, shape (n_samples, n_dimensions).</p></li>
+<li><p><strong>ts_gen</strong> (<em>np.ndarray</em>) – Generated time series, shape (n_samples, n_dimensions).</p></li>
+<li><p><strong>num_freq_bins</strong> (<em>int</em>) – Number of frequency bins to use in FFT for power spectrum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Average Hellinger distance across all dimensions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>avg_dh</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="simple">
+<dt>Mikhaeil et al. Advances in Neural Information Processing Systems, 35:</dt><dd><p>11297–11312, December 2022.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.calculate_season_error">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">calculate_season_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_past</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.calculate_season_error" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mean absolute error between the forward and backward slices of the
+past data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.coefficient_of_variation">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">coefficient_of_variation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.coefficient_of_variation" title="Link to this definition">¶</a></dt>
+<dd><p>Coefficient of Variation of the root mean squared error relative to the mean
+of the true values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Coefficient of Variation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.compute_metrics">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">compute_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dysts.metrics.compute_metrics" title="Link to this definition">¶</a></dt>
+<dd><p>Compute multiple time series metrics
+:param y_true: The true values of shape (…, T, …)
+:type y_true: np.ndarray
+:param y_pred: The predicted values of shape (…, T, …)
+:type y_pred: np.ndarray
+:param verbose: Whether to print the computed metrics. Default is False.
+:type verbose: bool
+:param include: The metrics to include. Default is None, which</p>
+<blockquote>
+<div><p>computes all metrics. Otherwise, specify a list of metrics to compute.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch_axis</strong> (<em>optional</em><em>, </em><em>int</em>) – The axis to treat as the batch dimension. Default is
+None, which adds a singleton batchdimension at axis 0</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the computed metrics</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.dtw">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">dtw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.dtw" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Dynamic Time Warping (DTW) distance between two time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The DTW distance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.estimate_kl_divergence">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">estimate_kl_divergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true_orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generated_orbit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#dysts.metrics.estimate_kl_divergence" title="Link to this definition">¶</a></dt>
+<dd><p>Estimate KL divergence between observed and generated orbits using Gaussian Mixture
+Models (GMMs).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed_orbit</strong> (<em>np.ndarray</em>) – Observed orbit points, with shape (T, N) where T is
+the number of time steps and N is the dimensionality.</p></li>
+<li><p><strong>generated_orbit</strong> (<em>np.ndarray</em>) – Generated orbit points, with shape (T, N) where T is
+the number of time steps and N is the dimensionality.</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of Monte Carlo samples.</p></li>
+<li><p><strong>sigma_scale</strong> (<em>float</em>) – Variance parameter for the GMMs. If None, the variance is
+estimated locally for each point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Estimated KL divergence</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Hess, Florian, et al. “Generalized teacher forcing for learning chaotic
+dynamics.” Proceedings of the 40th International Conference on Machine Learning.
+2023.</p>
+<dl class="simple">
+<dt>Development:</dt><dd><p>Rank-order (copula) transform each orbit coordinate, in order to reduce
+sensitivity to spacing among time series.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.find_sigma">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">find_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.find_sigma" title="Link to this definition">¶</a></dt>
+<dd><p>Given a list of distances to k nearest neighbors, find the sigma for each point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dists</strong> (<em>np.ndarray</em>) – A matrix of shape (k,)</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – The tolerance for the sigma</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sigma
+np.ndarray: The transformed distances</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.hellinger_distance">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">hellinger_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.hellinger_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Hellinger distance between two distributions.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.horizoned_metric">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">horizoned_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.horizoned_metric" title="Link to this definition">¶</a></dt>
+<dd><p>Compute a metric over a range of horizons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+<li><p><strong>metric</strong> (<em>callable</em>) – The metric function</p></li>
+<li><p><strong>*args</strong> – Additional arguments to pass to the metric function</p></li>
+<li><p><strong>horizon</strong> (<em>int</em>) – The maximum horizon to compute the metric over. If None, the
+horizon is set to the length of the time series</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to pass to the metric function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The metric values at each horizon</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.kendall">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">kendall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.kendall" title="Link to this definition">¶</a></dt>
+<dd><p>Kendall-Tau Correlation. Returns dimensionwise mean for multivariate time series of
+shape (T, D)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.mae">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.mae" title="Link to this definition">¶</a></dt>
+<dd><p>Mean Absolute Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MAE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.mape">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">mape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.mape" title="Link to this definition">¶</a></dt>
+<dd><p>The Mean Absolute Percentage Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MAPE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.marre">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">marre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.marre" title="Link to this definition">¶</a></dt>
+<dd><p>Mean Absolute Ranged Relative Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MARRE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.mase">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">mase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.mase" title="Link to this definition">¶</a></dt>
+<dd><p>The mean absolute scaled error.</p>
+<p>Adapted from tensorflow-probability and
+<a class="reference external" href="https://en.wikipedia.org/wiki/Mean_absolute_scaled_error">https://en.wikipedia.org/wiki/Mean_absolute_scaled_error</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The true values.</p></li>
+<li><p><strong>yhat</strong> (<em>ndarray</em>) – The predicted values.</p></li>
+<li><p><strong>y_train</strong> (<em>ndarray</em>) – The training values.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – The season length, which is the number of time steps that are
+skipped when computing the denominator. Default is 1.</p></li>
+<li><p><strong>time_dim</strong> (<em>int</em>) – The dimension of the time series. Default is -1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MASE error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mase_val (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.mse">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">mse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.mse" title="Link to this definition">¶</a></dt>
+<dd><p>Mean Squared Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MSE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.msis">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">msis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yhat_lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yhat_upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.msis" title="Link to this definition">¶</a></dt>
+<dd><p>The mean scaled interval score.</p>
+<p>Adapted from tensorflow-probability and
+<a class="reference external" href="https://www.uber.com/blog/m4-forecasting-competition/">https://www.uber.com/blog/m4-forecasting-competition/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – An array containing the true values.</p></li>
+<li><p><strong>yhat_lower</strong> – An array containing the a% quantile of the predicted
+distribution.</p></li>
+<li><p><strong>yhat_upper</strong> – An array containing the (1-a)% quantile of the
+predicted distribution.</p></li>
+<li><p><strong>y_obs</strong> – An array containing the training values.</p></li>
+<li><p><strong>m</strong> – The season length.</p></li>
+<li><p><strong>a</strong> – A scalar in [0, 1] specifying the quantile window to evaluate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scalar MSIS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.mutual_information">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.mutual_information" title="Link to this definition">¶</a></dt>
+<dd><p>Mutual Information. Returns dimensionwise mean for multivariate time series of
+shape (T, D). Computes the mutual information separately for each dimension and
+returns the mean.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.nrmse">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">nrmse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.nrmse" title="Link to this definition">¶</a></dt>
+<dd><p>Normalized Root Mean Squared Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – True values of shape (T, D)</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – Predicted values of shape (T, D)</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – Small value to avoid division by zero</p></li>
+<li><p><strong>scale</strong> (<em>np.ndarray</em>) – Standard deviation of the true values of shape (D,). If None,
+the standard deviation is computed from the true values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NRMSE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.ope">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">ope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.ope" title="Link to this definition">¶</a></dt>
+<dd><p>Optimality Percentage Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The OPE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.pearson">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">pearson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.pearson" title="Link to this definition">¶</a></dt>
+<dd><p>Pearson Correlation. Returns dimensionwise mean for multivariate time series of
+shape (T, D)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.r2_score">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">r2_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.r2_score" title="Link to this definition">¶</a></dt>
+<dd><p>The R2 Score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The R2 Score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.rmse">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">rmse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.rmse" title="Link to this definition">¶</a></dt>
+<dd><p>Root Mean Squared Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The RMSE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.rmsle">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">rmsle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.rmsle" title="Link to this definition">¶</a></dt>
+<dd><p>Root Mean Squared Log Error. In case of negative values, the series is shifted
+to the positive domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The RMSLE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.simplex_neighbors">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">simplex_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.simplex_neighbors" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the distance between points in a dataset using the simplex distance metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – dataset of shape (n, d)</p></li>
+<li><p><strong>Y</strong> (<em>np.ndarray</em>) – dataset of shape (m, d)</p></li>
+<li><p><strong>metric</strong> (<em>str</em>) – distance metric to use</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – number of nearest neighbors to use in the distance calculation</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – tolerance for the distance calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>weights matrix of shape (n,)
+idx (np.ndarray): index matrix of shape (n, k)
+sigmas (np.ndarray): sigmas matrix of shape (n,)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>wgts (np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.smape">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">smape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.smape" title="Link to this definition">¶</a></dt>
+<dd><p>Symmetric mean absolute percentage error</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.spearman">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">spearman</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.spearman" title="Link to this definition">¶</a></dt>
+<dd><p>Spearman Correlation. Returns dimensionwise mean for multivariate time series of
+shape (T, D)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dysts.metrics.wape">
+<span class="sig-prename descclassname"><span class="pre">dysts.metrics.</span></span><span class="sig-name descname"><span class="pre">wape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dysts.metrics.wape" title="Link to this definition">¶</a></dt>
+<dd><p>Weighted Absolute Percentage Error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em>) – The predicted values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The WAPE</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="indices-and-tables">
 <h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h2>

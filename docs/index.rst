@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-##################
+###################
 dysts API Reference
-##################
+###################
 
 The API reference for the dysts repository: https://github.com/williamgilpin/dysts
 
