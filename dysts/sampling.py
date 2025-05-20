@@ -36,7 +36,7 @@ class SignedGaussianParamSampler(BaseSampler):
     Args:
         scale: std (isotropic) of gaussian used for sampling
         sign_match_probability: probability of matching perturbation sign with parameter sign
-            defaults to 0.0 (never match signs, matching GaussianParamSampler behavior)
+            defaults to 0.0 (never match signs, matching previous deprecated GaussianParamSampler behavior)
     """
 
     scale: float = 1e-2
