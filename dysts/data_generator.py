@@ -15,9 +15,8 @@ from tqdm import tqdm
 
 from . import flows
 from .attractor import AttractorValidator
-from .base import BaseDyn
+from .base import BaseDyn, SkewProduct
 from .sampling import BaseSampler, OnAttractorInitCondSampler
-from .skew_system import SkewProduct
 from .systems import make_trajectory_ensemble
 from .utils import dict_demote_from_numpy, process_trajs, timeit
 
