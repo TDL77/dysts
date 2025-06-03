@@ -114,7 +114,7 @@ class DynSysSampler(BaseDynSysSampler):
     num_points: int = 1024
 
     param_sampler: BaseSampler | None = None
-    ic_sampler: BaseSampler | None = None
+    ic_sampler: OnAttractorInitCondSampler | None = None
     num_ics: int = 1
     num_param_perturbations: int = 1
 
@@ -310,13 +310,13 @@ class DynSysSampler(BaseDynSysSampler):
 
     def _init_perturbations(
         self,
-        systems: list[str | BaseDyn],
+        systems: list[str] | list[BaseDyn],
         ic_rng: np.random.Generator | None = None,
         param_rng: np.random.Generator | None = None,
         perturb_params: bool = False,
         perturb_ics: bool = False,
         use_multiprocessing: bool = True,
-    ) -> list[BaseDyn]:
+    ) -> list[BaseDyn | None]:
         """
         Pre-initialize the perturbed dyst objects for generation
         """
@@ -352,7 +352,7 @@ class DynSysSampler(BaseDynSysSampler):
 
     def _generate_ensembles(
         self,
-        systems: list[str | BaseDyn],
+        systems: list[str] | list[BaseDyn],
         use_multiprocessing: bool = True,
         postprocessing_callbacks: list[Callable] | None = None,
         silent_errors: bool = False,
@@ -1007,7 +1007,9 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
 
                 # Cache ICs for future iterations
                 for sys in systems:
-                    curr_traj = ensemble[sys.name][
+                    curr_traj = ensemble[
+                        sys.name
+                    ][  # type: ignore
                         int(self.validator_transient_frac * self.num_points) :
                     ]
                     ic_cache[sys.name] = self.rng.choice(

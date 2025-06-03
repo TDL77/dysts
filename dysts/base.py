@@ -41,6 +41,19 @@ def staticjit(func: Callable) -> Callable:
 class BaseDyn:
     """A base class for dynamical systems"""
 
+    name: str
+    metadata_path: str | None
+    metadata: dict[str, Any]
+    required_fields: tuple[str | tuple[str, ...], ...]
+    params: dict[str, Any]
+    param_list: list[Any]
+    ic: np.ndarray
+    dimension: int
+    mean: np.ndarray
+    std: np.ndarray
+    _postprocessing: Callable[..., np.ndarray] | None
+    unbounded_indices: list[int]
+
     def __init__(
         self,
         metadata_path: str | None = None,
@@ -219,6 +232,7 @@ class DynSys(BaseDyn):
     dt: float
     period: float
     maximum_lyapunov_estimated: float
+    unbounded_indices: list[int]
 
     def __init__(
         self,
@@ -626,6 +640,12 @@ class DynSysDelay(BaseDyn):
 
 
 class SkewProduct(DynSys):
+    driver: DynSys
+    response: DynSys
+    driver_dim: int
+    response_dim: int
+    coupling_map: Callable[[np.ndarray, np.ndarray], np.ndarray]
+
     def __init__(
         self,
         driver: DynSys,
@@ -674,7 +694,7 @@ class SkewProduct(DynSys):
         )
 
         # hack: set a dummy param list for param count checks
-        n_params = len(driver.parameters) + len(response.parameters)
+        n_params = len(driver.params) + len(response.params)
         if hasattr(self.coupling_map, "n_params"):
             n_params += self.coupling_map.n_params
         self.param_list = [0 for _ in range(n_params)]

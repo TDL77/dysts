@@ -877,8 +877,8 @@ def optimal_delay(
             minima_indices.append(i)
 
             # Calculate prominence (height difference to nearby values on smoothed MI curve)
-            left_max = np.max(smoothed_mi[: i + 1])
-            right_max = np.max(smoothed_mi[i:])
+            left_max = float(np.max(smoothed_mi[: i + 1]))
+            right_max = float(np.max(smoothed_mi[i:]))
             lower_max = min(left_max, right_max)
             prominence = lower_max - smoothed_mi[i]
             prominences.append(prominence)
@@ -924,7 +924,7 @@ def compute_mean_square_displacement(
     p: np.ndarray, q: np.ndarray, max_shift_ratio: float = 0.1
 ) -> tuple[np.ndarray, np.ndarray]:
     """
-    Computes the mean square displacement (MSD) over a range of shifts.
+    Computes the mean square displacement (msd) over a range of shifts.
 
     Parameters:
       p, q: translation variables (1D arrays)
@@ -932,34 +932,34 @@ def compute_mean_square_displacement(
 
     Returns:
       shift_indices: array of shift indices
-      MSD: array of mean square displacements corresponding to shift_indices.
+      msd: array of mean square displacements corresponding to shift_indices.
     """
     T = len(p)
     max_shift = int(max_shift_ratio * T)
     shift_indices = np.arange(1, max_shift + 1)
-    MSD = np.empty_like(shift_indices, dtype=float)
+    msd = np.empty_like(shift_indices, dtype=float)
 
     # For each time shift n, compute the mean squared difference
     for idx, shift_idx in enumerate(shift_indices):
         diff_p = p[shift_idx:] - p[:-shift_idx]
         diff_q = q[shift_idx:] - q[:-shift_idx]
-        MSD[idx] = np.mean(diff_p**2 + diff_q**2)
-    return shift_indices, MSD
+        msd[idx] = np.mean(diff_p**2 + diff_q**2)
+    return shift_indices, msd
 
 
-def compute_K_statistic(shift_indices: np.ndarray, MSD: np.ndarray) -> float:
+def compute_K_statistic(shift_indices: np.ndarray, msd: np.ndarray) -> float:
     """
-    Computes the correlation coefficient between the shift indices and the MSD.
+    Computes the correlation coefficient between the shift indices and the msd.
     A value near 1 indicates linear growth (chaos), while near 0 indicates bounded behavior.
 
     Parameters:
         shift_indices: 1D array of shape (T,), the shift indices
-        MSD: 1D array of shape (T,), the mean square displacement computed as the mean of the squared differences between the translation variables
+        msd: 1D array of shape (T,), the mean square displacement computed as the mean of the squared differences between the translation variables
 
     Returns:
         K: correlation coefficient
     """
-    corr_matrix = np.corrcoef(shift_indices, MSD)  # 2x2 correlation matrix
+    corr_matrix = np.corrcoef(shift_indices, msd)  # 2x2 correlation matrix
     K = corr_matrix[0, 1]
     return K
 
@@ -981,8 +981,8 @@ def zero_one_test(phi: np.ndarray, c: float | None = None) -> float:
         c = np.random.uniform(np.pi / 10, 1 * np.pi / 5)
 
     p, q = compute_translation_variables(phi, c)
-    shift_indices, MSD = compute_mean_square_displacement(p, q)
-    K = compute_K_statistic(shift_indices, MSD)  # correlation coefficient
+    shift_indices, msd = compute_mean_square_displacement(p, q)
+    K = compute_K_statistic(shift_indices, msd)  # correlation coefficient
 
     return K
 
