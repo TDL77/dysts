@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 import dysts.flows as dfl
-from dysts.sampling import GaussianInitialConditionSampler, GaussianParamSampler
+from dysts.sampling import GaussianInitialConditionSampler, SignedGaussianParamSampler
 from dysts.systems import get_attractor_list, make_trajectory_ensemble
 
 PARAMETERLESS_SYSTEMS = [
@@ -118,11 +118,11 @@ class TestTrajectoryEnsemble(unittest.TestCase):
             perturbed_traj = perturbed_sols[system_name]
             self.assertTrue(unperturbed_traj is not None)
             self.assertTrue(perturbed_traj is not None)
-            self.assertEqual(unperturbed_traj.shape, perturbed_traj.shape)
-            self.assertFalse(np.allclose(unperturbed_traj, perturbed_traj))
+            self.assertEqual(unperturbed_traj.shape, perturbed_traj.shape)  # type: ignore
+            self.assertFalse(np.allclose(unperturbed_traj, perturbed_traj))  # type: ignore
 
     def test_ensemble_generation_parameter_sampling(self):
-        param_sampler = GaussianParamSampler(
+        param_sampler = SignedGaussianParamSampler(
             scale=1e-2, random_seed=random.randint(0, 1000000)
         )
         system_sample = random.sample(
