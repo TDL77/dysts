@@ -1,5 +1,6 @@
 """
 Test the skew system generation pipeline
+NOTE: this is not a unit test, just a script to make skew systems for testing
 TODO: consider converting a slimmed down version of this into a unit test
 """
 
