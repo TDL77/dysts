@@ -242,6 +242,7 @@ class DynSysSampler(BaseDynSysSampler):
             event_fns=self.events,
             use_multiprocessing=use_multiprocessing,
             silent_errors=silent_errors,
+            multiprocessing_kwargs=self.multiprocess_kwargs,
             **kwargs,
         )
         failed_integrations = [
@@ -429,6 +430,7 @@ class DynSysSampler(BaseDynSysSampler):
                         event_fns=self.events,
                         use_multiprocessing=use_multiprocessing,
                         silent_errors=silent_errors,
+                        multiprocessing_kwargs=self.multiprocess_kwargs,
                         **kwargs,
                     )
 
@@ -971,6 +973,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
                 event_fns=self.events,
                 use_multiprocessing=use_multiprocessing,
                 silent_errors=silent_errors,
+                multiprocessing_kwargs=self.multiprocess_kwargs,
                 **kwargs,
             )
 
