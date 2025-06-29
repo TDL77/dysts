@@ -215,6 +215,59 @@ def gp_dim(data, y_data=None, rvals=None, nmax=100):
 
     return estimate_powerlaw(rvals)
 
+def twonn_dim(X, approximate=False):
+    """
+    Estimate the global intrinsic dimension of a point cloud using the TwoNN 
+    estimator [1]. If approximate is True, the calculation is performed using an
+    approximate nearest neighbors algorithm.
+
+    Args:
+        X (np.array): Input data points.
+
+    Returns:
+        d (float): Estimated intrinsic dimension.
+
+    References:
+        [1] Facco, E., d'Errico, M., Rodriguez, A., & Laio, A. (2017).
+            Estimating the intrinsic dimension of datasets by a minimal neighborhood 
+            information.Scientific reports, 7(1), 12140.
+    """
+    X = np.asarray(X)
+    # Find distances to self (0), 1st NN, and 2nd NN
+
+    if approximate:
+        try:
+            import hnswlib
+        except ImportError:
+            raise ImportError("hnswlib not installed. Please install hnswlib to use approximate calculation.")
+        
+        index = hnswlib.Index(space='l2', dim=X.shape[1])
+        index.init_index(max_elements=X.shape[0], ef_construction=100, M=16)
+        index.add_items(X)
+        # index.set_ef(100)
+        labels, distances = index.knn_query(X, k=3)
+        distances = np.sqrt(distances)
+
+    else:
+        try:
+            from sklearn.neighbors import NearestNeighbors
+        except ImportError:
+            raise ImportError("scikit-learn not installed. Please install scikit-learn to use exact calculation.")
+        nbrs = NearestNeighbors(n_neighbors=3).fit(X)
+        distances, _ = nbrs.kneighbors(X)
+
+    r1 = distances[:, 1]
+    r2 = distances[:, 2]
+
+    # Ratio of distances for each point
+    mu = r2 / r1
+    # Filter out any invalid ratios (e.g. division by zero)
+    mu = mu[np.isfinite(mu) & (mu > 1)]
+
+    n = mu.size
+    # Maximum likelihood estimator for d under CDF F(mu) = 1 − mu^{-d}
+    d = n / np.sum(np.log(mu))
+    return d
 
 def corr_gpdim(traj1, traj2, register=False, standardize=False, **kwargs):
     """
