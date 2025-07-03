@@ -16,6 +16,7 @@ from scipy.spatial.distance import cdist
 from statsmodels.tsa.stattools import adfuller, kpss
 
 from .analysis import max_lyapunov_exponent_rosenstein, run_zero_one_sweep
+from .utils import safe_standardize
 
 
 @dataclass
@@ -260,110 +261,128 @@ def check_not_trajectory_decay(
 
 def check_not_limit_cycle(
     traj: np.ndarray,
-    tolerance: float = 1e-3,
-    min_prop_recurrences: float = 0.0,
-    min_counts_per_rtime: int = 100,
-    min_block_length: int = 1,
+    n_timepoints_to_check: int = 512,
+    tolerance: float = 1e-2,
+    min_prop_recurrences: float = 0.1,
+    min_counts_per_rtime: int = 200,
+    min_block_length: int = 50,
     min_recurrence_time: int = 1,
-    enforce_endpoint_recurrence: bool = False,
 ) -> bool:
     """
-    Checks if a multidimensional trajectory is collapsing to a limit cycle.
+    Check if a trajectory is NOT a limit cycle using recurrence analysis.
 
     Args:
-        traj (ndarray): 2D array of shape (num_vars, num_timepoints), where each row is a time series.
-        tolerance (float): Tolerance for detecting revisits to the same region in phase space.
-        min_prop_recurrences (float): Minimum proportion of the trajectory length that must be recurrences to consider a limit cycle
-        min_counts_per_rtime (int): Minimum number of counts per recurrence time to consider a recurrence time as valid
-        min_block_length (int): Minimum block length of consecutive recurrence times to consider a recurrence time as valid
-        min_recurrence_time (int): Minimum recurrence time to consider a recurrence time as valid
-                e.g. Setting min_recurrence_time = 1 means that we can catch when the integration fails (or converges to fixed point)
-        enforce_endpoint_recurrence (bool): Whether to enforce that either of the endpoints are recurrences
-                e.g. Setting enforce_endpoint_recurrence = True means that we are operating in a stricter regime where we require either
-                     the initial or final point to be a recurrence (repeated some time in the trajectory).
+        traj: Trajectory data of shape (n_dimensions, n_timepoints)
+        n_timepoints_to_check: Number of timepoints to check for recurrence analysis
+        tolerance: Distance threshold for recurrence detection
+        min_prop_recurrences: Minimum proportion of recurrences required
+        min_counts_per_rtime: Minimum counts per recurrence time
+        min_block_length: Minimum length of consecutive blocks
+        min_recurrence_time: Minimum recurrence time to consider
 
-    The default args are designed to be lenient, and catch pathological cases beyond purely limit cycles.
-        For strict mode, can set e.g. min_prop_recurrences = 0.1, min_block_length=50, min_recurrence_time = 10, enforce_endpoint_recurrence = True,
     Returns:
-        bool: True if the trajectory is not collapsing to a limit cycle, False otherwise.
+        True if trajectory is NOT a limit cycle, False otherwise
+        If return_computed_quantities=True and result is False, returns (False, quantities)
     """
-    n = traj.shape[1]
 
-    # Step 1: Calculate the pairwise distance matrix, shape should be (N, N)
-    dist_matrix = cdist(traj.T, traj.T, metric="euclidean").astype(np.float16)
-    dist_matrix = np.triu(dist_matrix, k=1)
+    traj = traj[:, :n_timepoints_to_check]
+    n_timepoints = traj.shape[1]
 
-    # Step 2: Get recurrence times from thresholding distance matrix
-    recurrence_indices = np.asarray(
-        (dist_matrix < tolerance) & (dist_matrix > 0)
-    ).nonzero()
-
-    n_recurrences = len(recurrence_indices[0])
-    if n_recurrences == 0:
-        return True
-
-    if enforce_endpoint_recurrence:
-        # check if an eps neighborhood around either n-1 or 0 is in either of the recurrence indices
-        eps = 0
-        if not any(
-            (n - 1) - max(indices) <= eps or min(indices) - 0 <= eps
-            for indices in recurrence_indices
-        ):
-            return True
-
-    # get recurrence times
-    recurrence_times = np.abs(recurrence_indices[0] - recurrence_indices[1])
-    recurrence_times = recurrence_times[recurrence_times >= min_recurrence_time]
-
-    # Heuristic 1: Check if there are enough recurrences to consider a limit cycle
-    n_recurrences = len(recurrence_times)
-    if n_recurrences < int(min_prop_recurrences * n):
-        return True
-
-    # Heuristic 2: Check if there are enough valid recurrence times
-    rtimes_counts = Counter(recurrence_times)
-    n_valid_rtimes = sum(
-        1 for count in rtimes_counts.values() if count >= min_counts_per_rtime
+    # standardize the trajectory
+    traj = safe_standardize(traj)
+    # Calculate upper triangular distance matrix
+    dist_matrix = np.triu(
+        cdist(traj.T, traj.T, metric="euclidean").astype(np.float16), k=1
     )
-    if n_valid_rtimes < 1:
+
+    # Find recurrence indices
+    recurrence_mask = (dist_matrix < tolerance) & (dist_matrix > 0)
+    t1_indices, t2_indices = recurrence_mask.nonzero()
+
+    if len(t1_indices) == 0:
+        # print("No recurrences found")
         return True
 
-    # Heuristic 3: Check if the valid recurrence times are formed of blocks of consecutive timepoints
-    if min_block_length > 1:
-        rtimes_dict = defaultdict(list)
-        block_length = 1
-        prev_rtime = None
-        prev_t1 = None
-        prev_t2 = None
-        rtimes_is_valid = False
-        num_blocks = 0
-        # assuming recurrence_indices[0] is sorted
-        for t1, t2 in zip(*recurrence_indices):
-            rtime = abs(t2 - t1)
-            if rtime < min_recurrence_time:
-                continue
-            if (
-                rtime == prev_rtime
-                and abs(t1 - prev_t1) == 1
-                and abs(t2 - prev_t2) == 1
-            ):
-                block_length += 1
-            else:
-                if block_length > min_block_length:
-                    rtimes_dict[prev_rtime].append(block_length)
-                    num_blocks += 1
-                block_length = 1
-            prev_t1, prev_t2, prev_rtime = t1, t2, rtime
-            if block_length > min_block_length * 2:
-                rtimes_is_valid = True
-                break
-            if num_blocks >= 2:  # if valid, save computation and break
-                rtimes_is_valid = True
-                break
-        if not rtimes_is_valid:
-            return True
+    # Calculate recurrence times
+    recurrence_times = np.abs(t1_indices - t2_indices)
+    valid_times = recurrence_times[recurrence_times >= min_recurrence_time]
+
+    # Heuristic 1: Check minimum proportion of recurrences
+    if len(valid_times) < int(min_prop_recurrences * n_timepoints):
+        # print(
+        #     f"Not enough recurrences: {len(valid_times)} < {int(min_prop_recurrences * n_timepoints)}"
+        # )
+        return True
+
+    # Heuristic 2: Check minimum counts per recurrence time
+    time_counts = Counter(valid_times)
+    if not any(count >= min_counts_per_rtime for count in time_counts.values()):
+        # print(
+        #     f"Not enough counts per recurrence time: {time_counts} < {min_counts_per_rtime}"
+        # )
+        return True
+
+    # Heuristic 3: Check for consecutive blocks (only if min_block_length > 1)
+    if min_block_length > 1 and not _has_valid_blocks(
+        t1_indices, t2_indices, min_block_length, min_recurrence_time
+    ):
+        # print(f"No valid blocks found with min_block_length={min_block_length}")
+        return True
 
     return False
+
+
+def _has_valid_blocks(
+    t1_indices: np.ndarray,
+    t2_indices: np.ndarray,
+    min_block_length: int,
+    min_recurrence_time: int,
+) -> bool:
+    """Check for valid consecutive blocks in recurrence analysis.
+
+    This function analyzes pairs of recurrence indices to identify consecutive blocks
+    where the recurrence time remains constant and the indices form consecutive sequences.
+    A valid block indicates potential periodic behavior in the dynamical system.
+
+    Args:
+        t1_indices: Array of first time indices in recurrence pairs.
+        t2_indices: Array of second time indices in recurrence pairs.
+        min_block_length: Minimum length required for a block to be considered valid.
+        min_recurrence_time: Minimum recurrence time threshold to consider.
+
+    Returns:
+        bool: True if at least one valid block is found, False otherwise.
+
+    Note:
+        The function implements early termination when either:
+        - A block of length >= 2 * min_block_length is found
+        - At least 2 valid blocks are found
+    """
+    block_length = 1
+    prev_rtime = None
+    prev_t1 = None
+    prev_t2 = None
+    num_blocks = 0
+
+    for t1, t2 in zip(t1_indices, t2_indices):
+        rtime = abs(t2 - t1)
+        if rtime < min_recurrence_time:
+            continue
+
+        if rtime == prev_rtime and abs(t1 - prev_t1) == 1 and abs(t2 - prev_t2) == 1:
+            block_length += 1
+        else:
+            if block_length >= min_block_length:
+                num_blocks += 1
+            block_length = 1
+
+        prev_t1, prev_t2, prev_rtime = t1, t2, rtime
+
+        # Early termination conditions
+        if block_length >= min_block_length * 2 or num_blocks >= 2:
+            return True
+
+    return num_blocks >= 1
 
 
 def check_lyapunov_exponent(traj: np.ndarray, traj_len: int = 100) -> bool:
@@ -385,9 +404,10 @@ def check_lyapunov_exponent(traj: np.ndarray, traj_len: int = 100) -> bool:
 
 def check_power_spectrum(
     traj: np.ndarray,
-    rel_peak_height: float = 1e-4,
-    rel_prominence: float = 1e-4,
-    min_peaks: int = 3,
+    n_timepoints_to_check: int | None = None,
+    rel_peak_height: float = 1e-5,
+    rel_prominence: float = 1e-5,
+    min_peaks: int = 20,
 ) -> bool:
     """Check if a multi-dimensional trajectory has characteristics of chaos via power spectrum.
 
@@ -400,6 +420,8 @@ def check_power_spectrum(
     Returns:
         True if the system exhibits chaotic characteristics
     """
+    if n_timepoints_to_check is not None:
+        traj = traj[:, :n_timepoints_to_check]
     power = np.abs(rfft(traj, axis=1)) ** 2  # type: ignore
 
     power_maxes = power.max(axis=1)

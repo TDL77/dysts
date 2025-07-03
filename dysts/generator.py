@@ -215,7 +215,8 @@ class DynSysSampler(BaseDynSysSampler):
         save_dyst_dir, failed_dyst_dir = self._prepare_save_directories(
             save_dir, split, split_failures=split_failures
         )
-        num_total_samples = self.num_param_perturbations * self.num_ics
+        # NOTE: we define number of total samples as (num_param_perturbations * num_ics) + 1 to account for the default ensemble (with one initial condition)
+        num_total_samples = self.num_param_perturbations * self.num_ics + 1
 
         callbacks = [
             self._reset_events_callback,
@@ -233,8 +234,7 @@ class DynSysSampler(BaseDynSysSampler):
         num_periods = self.rng.choice(self.num_periods)
         logger.info(f"Generating default ensemble with {num_periods} periods")
 
-        # treat the default params as the zeroth sample
-        # TODO: I want to eventually move this to _generate_ensembles since this is repeated code and also doesn't allow us to handle multiple initial conditions
+        # treat the default params as the zeroth sample, enforce just one (default) initial condition
         default_ensemble = make_trajectory_ensemble(
             self.num_points,
             subset=systems,
@@ -242,7 +242,7 @@ class DynSysSampler(BaseDynSysSampler):
             event_fns=self.events,
             use_multiprocessing=use_multiprocessing,
             silent_errors=silent_errors,
-            multiprocessing_kwargs=self.multiprocess_kwargs,
+            multiprocess_kwargs=self.multiprocess_kwargs,
             **kwargs,
         )
         failed_integrations = [
@@ -255,10 +255,10 @@ class DynSysSampler(BaseDynSysSampler):
             for key, value in default_ensemble.items()
             if key not in failed_integrations
         }
-        for callback in callbacks[:-1]:  # ignore failed integrations
+        for callback in callbacks:
             callback(
-                0,
-                default_ensemble,
+                sample_idx=0,
+                ensemble=default_ensemble,
                 excluded_keys=failed_integrations,
                 perturbed_systems=systems if is_all_basedyn else None,
             )
@@ -395,7 +395,9 @@ class DynSysSampler(BaseDynSysSampler):
 
                 ic_rng_stream = param_rng.spawn(self.num_ics)
                 for j, ic_rng in enumerate(ic_rng_stream):
-                    sample_idx = i * len(ic_rng_stream) + j + 1
+                    sample_idx = (
+                        i * len(ic_rng_stream) + j + 1
+                    )  # + 1 to account for the previously created default_ensemble in sample_ensemble()
                     if self.wandb_run is not None:
                         self.wandb_run.log({"sample_idx": sample_idx})
 
@@ -420,7 +422,7 @@ class DynSysSampler(BaseDynSysSampler):
 
                     num_periods = self.rng.choice(self.num_periods)
                     logger.info(
-                        f"Generating ensemble of param perturbation {i} and ic perturbation {j} with {num_periods} periods"
+                        f"Generating ensemble of param perturbation {i + 1} and ic perturbation {j} with {num_periods} periods"
                     )
 
                     ensemble = make_trajectory_ensemble(
@@ -430,7 +432,7 @@ class DynSysSampler(BaseDynSysSampler):
                         event_fns=self.events,
                         use_multiprocessing=use_multiprocessing,
                         silent_errors=silent_errors,
-                        multiprocessing_kwargs=self.multiprocess_kwargs,
+                        multiprocess_kwargs=self.multiprocess_kwargs,
                         **kwargs,
                     )
 
@@ -448,8 +450,8 @@ class DynSysSampler(BaseDynSysSampler):
 
                     for callback in postprocessing_callbacks or []:
                         callback(
-                            sample_idx,
-                            ensemble,
+                            sample_idx=sample_idx,
+                            ensemble=ensemble,
                             excluded_keys=excluded_systems,
                             perturbed_systems=perturbed_systems,
                         )
@@ -483,7 +485,7 @@ class DynSysSampler(BaseDynSysSampler):
         """
         ensemble_list = []
 
-        def _callback(sample_idx, ensemble, **kwargs):
+        def _callback(sample_idx: int, ensemble: dict[str, np.ndarray], **kwargs):
             if len(ensemble.keys()) == 0:
                 if save_dyst_dir is not None:
                     logger.warning("No successful trajectories for this sample")
@@ -545,6 +547,7 @@ class DynSysSampler(BaseDynSysSampler):
                     ensemble, first_sample_idx=sample_idx
                 )
             )
+            logger.info(f"{len(ensemble)} systems passed attractor validator")
             current_param_pert_summary["num_systems_valid"] = len(ensemble)
         else:
             failed_ensemble = {}
@@ -561,8 +564,7 @@ class DynSysSampler(BaseDynSysSampler):
                 ensemble,
                 split_coords=self.split_coords,
                 verbose=self.verbose,
-                overwrite=True,  # idk it is what it is
-                base_sample_idx=sample_idx,
+                sample_idx=sample_idx,
             )
 
         if failed_dyst_dir is not None:
@@ -571,8 +573,7 @@ class DynSysSampler(BaseDynSysSampler):
                 failed_ensemble,
                 split_coords=self.split_coords,
                 verbose=self.verbose,
-                overwrite=True,  # idk it is what it is
-                base_sample_idx=sample_idx,
+                sample_idx=sample_idx,
             )
 
         if save_params_dir is not None and perturbed_systems is not None:
@@ -699,7 +700,9 @@ class DynSysSampler(BaseDynSysSampler):
                     len(np.unique(np.array(sample_inds).astype(int) // self.num_ics))
                     for sample_inds in valid_samples.values()
                 ),
-                "num_total_candidates": self.num_param_perturbations
+                "num_total_candidates": (
+                    self.num_param_perturbations + 1
+                )  # +1 for the default ensemble, which is not perturbed
                 * len(
                     valid_samples.keys()
                     | failed_samples.keys()
@@ -792,7 +795,9 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             if hasattr(event, "reset") and callable(event.reset):
                 event.reset()
 
-    def save_failed_integrations_callback(self, sample_idx, ensemble, **kwargs):
+    def save_failed_integrations_callback(
+        self, sample_idx: int, ensemble: dict[str, np.ndarray], **kwargs
+    ):
         excluded_keys = kwargs.get("excluded_keys", [])
         if len(excluded_keys) > 0:
             logger.warning(f"Integration failed for {len(excluded_keys)} systems")
@@ -811,7 +816,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
         """
         ensemble_list = []
 
-        def _callback(sample_idx, ensemble, **kwargs):
+        def _callback(sample_idx: int, ensemble: dict[str, np.ndarray], **kwargs):
             if len(ensemble.keys()) == 0:
                 if save_dyst_dir is not None:
                     logger.warning("No successful trajectories for this sample")
@@ -863,6 +868,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             ensemble, _ = self.attractor_validator.multiprocessed_filter_ensemble(
                 ensemble, first_sample_idx=sample_idx
             )
+            logger.info(f"{len(ensemble)} systems passed attractor validator")
             current_param_pert_summary["num_systems_valid"] = len(ensemble)
 
         if self.wandb_run is not None:
@@ -876,8 +882,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             ensemble,
             split_coords=self.split_coords,
             verbose=False,
-            overwrite=True,
-            base_sample_idx=sample_idx,
+            sample_idx=sample_idx,
         )
 
     @timeit(logger=logger)
@@ -926,6 +931,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             self.save_failed_integrations_callback,
         ]
 
+        # NOTE: here, we skip making the default ensemble separately; to streamline the ensemble generation, we do it in _generate_ensembles
         self._generate_ensembles(
             systems,
             save_dir=save_dir,
@@ -973,7 +979,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
                 event_fns=self.events,
                 use_multiprocessing=use_multiprocessing,
                 silent_errors=silent_errors,
-                multiprocessing_kwargs=self.multiprocess_kwargs,
+                multiprocess_kwargs=self.multiprocess_kwargs,
                 **kwargs,
             )
 
@@ -998,8 +1004,8 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             else:
                 for callback in postprocessing_callbacks or []:
                     callback(
-                        ic_idx + starting_sample_idx,
-                        ensemble,
+                        sample_idx=ic_idx + starting_sample_idx,
+                        ensemble=ensemble,
                         excluded_keys=excluded_systems,
                     )
 

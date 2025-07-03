@@ -187,7 +187,7 @@ def make_trajectory_ensemble(
     subset: Sequence[str] | Sequence[BaseDyn] | None = None,
     event_fns: Sequence[Callable] | None = None,
     silent_errors: bool = False,
-    multiprocessing_kwargs: dict[str, Any] = {},
+    multiprocess_kwargs: dict[str, Any] = {},
     **kwargs,
 ) -> dict[str, Array | None]:
     """
@@ -226,7 +226,7 @@ def make_trajectory_ensemble(
             subset or [],
             event_fns,
             silent_errors,
-            multiprocessing_kwargs=multiprocessing_kwargs,
+            multiprocess_kwargs=multiprocess_kwargs,
             **kwargs,
         )
     else:
@@ -243,7 +243,7 @@ def _multiprocessed_compute_trajectory(
     subset: Sequence[str] | Sequence[BaseDyn],
     event_fns: Sequence[Callable] | None,
     silent_errors: bool = False,
-    multiprocessing_kwargs: dict[str, Any] = {},
+    multiprocess_kwargs: dict[str, Any] = {},
     **kwargs: Any,
 ) -> dict[str, Array | None]:
     """Helper for handling multiprocessed integration with _compute_trajectory"""
@@ -254,7 +254,7 @@ def _multiprocessed_compute_trajectory(
     if event_fns is not None:
         assert all(num_unspecified_params(event) in [0, 1] for event in event_fns)
 
-    with Pool(**multiprocessing_kwargs) as pool:
+    with Pool(**multiprocess_kwargs) as pool:
         solutions = pool.starmap(
             partial(_compute_trajectory, **kwargs),
             [(n, system, event_fns, silent_errors) for system in subset],

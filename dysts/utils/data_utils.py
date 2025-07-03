@@ -134,9 +134,8 @@ def process_trajs(
     base_dir: str,
     timeseries: dict[str, np.ndarray],
     split_coords: bool = False,
-    overwrite: bool = False,
     verbose: bool = False,
-    base_sample_idx: int = -1,
+    sample_idx: int = 0,
 ) -> None:
     """
     Saves each trajectory in timeseries ensemble to a separate directory
@@ -147,9 +146,8 @@ def process_trajs(
             (num_eval_windows * num_datasets, num_channels, T) where T is the prediction
             length or context length.
         split_coords: Whether to split the coordinates by dimension
-        overwrite: Whether to overwrite existing trajectories
         verbose: Whether to print verbose output
-        base_sample_idx: The base sample index to use for the trajectories
+        sample_idx: The sample index to use for the trajectories
     """
     for sys_name, trajectories in timeseries.items():
         if verbose:
@@ -160,15 +158,8 @@ def process_trajs(
         system_folder = os.path.join(base_dir, sys_name)
         os.makedirs(system_folder, exist_ok=True)
 
-        if not overwrite:
-            for filename in os.listdir(system_folder):
-                if filename.endswith(".arrow"):
-                    sample_idx = int(filename.split("_")[0])
-                    base_sample_idx = max(base_sample_idx, sample_idx)
-
         for i, trajectory in enumerate(trajectories):
-            # very hacky, if there is only one trajectory, we can just use the base_sample_idx
-            curr_sample_idx = base_sample_idx + i + 1
+            curr_sample_idx = sample_idx + i
 
             if trajectory.ndim == 1:
                 trajectory = np.expand_dims(trajectory, axis=0)
