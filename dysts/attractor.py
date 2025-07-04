@@ -201,13 +201,10 @@ def check_boundedness(
     if np.any(np.abs(traj) > threshold):
         return False
 
-    mean = np.nanmean(traj.T, axis=0)
-    std = np.nanstd(traj.T, axis=0)
-    std = np.where(std < eps, eps, std)
+    traj = safe_standardize(traj)
 
-    standardized_traj = (traj.T - mean) / std
-
-    if np.max(np.abs(standardized_traj)) > max_zscore:
+    # If the coordinates of any dimension exceeds the max_zscore, mark the system as diverging
+    if np.max(np.abs(traj)) > max_zscore:
         return False
 
     return True
@@ -264,25 +261,39 @@ def check_not_limit_cycle(
     n_timepoints_to_check: int = 512,
     tolerance: float = 1e-2,
     min_prop_recurrences: float = 0.1,
-    min_counts_per_rtime: int = 200,
+    min_counts_per_rtime: int = 100,
     min_block_length: int = 50,
     min_recurrence_time: int = 1,
+    max_block_separation: int = 0,
+    num_blocks_to_find: int = 2,
 ) -> bool:
     """
     Check if a trajectory is NOT a limit cycle using recurrence analysis.
 
+    This function implements a multi-heuristic approach to detect limit cycles in dynamical
+    system trajectories. It uses recurrence analysis to identify periodic behavior by
+    analyzing the distance matrix between trajectory points and applying several criteria
+    to distinguish between chaotic and periodic dynamics.
+
     Args:
         traj: Trajectory data of shape (n_dimensions, n_timepoints)
         n_timepoints_to_check: Number of timepoints to check for recurrence analysis
-        tolerance: Distance threshold for recurrence detection
-        min_prop_recurrences: Minimum proportion of recurrences required
-        min_counts_per_rtime: Minimum counts per recurrence time
-        min_block_length: Minimum length of consecutive blocks
-        min_recurrence_time: Minimum recurrence time to consider
+        tolerance: Distance threshold for recurrence detection (points closer than this are considered recurrent)
+        min_prop_recurrences: Minimum proportion of recurrences required relative to total timepoints
+        min_counts_per_rtime: Minimum number of occurrences required for any recurrence time
+        min_block_length: Minimum length of consecutive blocks for block-based analysis
+        min_recurrence_time: Minimum recurrence time to consider (filters out self-recurrences)
+        max_block_separation: Maximum allowed separation between block endpoints for relaxed block detection
+        num_blocks_to_find: Number of valid blocks required for early termination
 
     Returns:
-        True if trajectory is NOT a limit cycle, False otherwise
-        If return_computed_quantities=True and result is False, returns (False, quantities)
+        bool: True if trajectory is NOT a limit cycle, False if it likely is a limit cycle
+
+    Note:
+        The function applies three main heuristics:
+        1. Minimum proportion of recurrences: Ensures sufficient periodic behavior
+        2. Minimum counts per recurrence time: Validates consistent periodic patterns
+        3. Consecutive block analysis: Identifies structured periodic sequences
     """
 
     traj = traj[:, :n_timepoints_to_check]
@@ -313,6 +324,7 @@ def check_not_limit_cycle(
         #     f"Not enough recurrences: {len(valid_times)} < {int(min_prop_recurrences * n_timepoints)}"
         # )
         return True
+    # print(f"Found {len(valid_times)} recurrences")
 
     # Heuristic 2: Check minimum counts per recurrence time
     time_counts = Counter(valid_times)
@@ -324,7 +336,12 @@ def check_not_limit_cycle(
 
     # Heuristic 3: Check for consecutive blocks (only if min_block_length > 1)
     if min_block_length > 1 and not _has_valid_blocks(
-        t1_indices, t2_indices, min_block_length, min_recurrence_time
+        t1_indices,
+        t2_indices,
+        min_block_length,
+        min_recurrence_time,
+        max_block_separation,
+        num_blocks_to_find,
     ):
         # print(f"No valid blocks found with min_block_length={min_block_length}")
         return True
@@ -337,6 +354,8 @@ def _has_valid_blocks(
     t2_indices: np.ndarray,
     min_block_length: int,
     min_recurrence_time: int,
+    max_block_separation: int = 0,
+    num_blocks_to_find: int = 2,
 ) -> bool:
     """Check for valid consecutive blocks in recurrence analysis.
 
@@ -349,40 +368,77 @@ def _has_valid_blocks(
         t2_indices: Array of second time indices in recurrence pairs.
         min_block_length: Minimum length required for a block to be considered valid.
         min_recurrence_time: Minimum recurrence time threshold to consider.
+        max_block_separation: Maximum allowed separation between block endpoints for relaxed block detection.
+        num_blocks_to_find: Number of valid blocks required for early termination.
 
     Returns:
-        bool: True if at least one valid block is found, False otherwise.
+        bool: True (limit cycle signal) if valid blocks are found according to the criteria, False otherwise.
 
     Note:
-        The function implements early termination when either:
-        - A block of length >= 2 * min_block_length is found
-        - At least 2 valid blocks are found
+        The function implements termination when either:
+        - A block of length >= 2 * min_block_length is found (Early Termination)
+        - At least num_blocks_to_find valid blocks are found
+        - For relaxed blocks, defined as blocks with endpoint separation < max_block_separation,
+            when number of relaxed blocks >= min_block_length * max_block_separation
+            We provide this feature to allow for more flexible block detection.
+                For example, if the recurrences happen every other timestep, for a given recurrence time,
+                we can use the relaxed block detection to still identify a block if we want a more strict limit cycle criteria.
     """
+    # Vectorize recurrence time calculation
+    rtimes = np.abs(t2_indices - t1_indices)
+    valid_mask = rtimes >= min_recurrence_time
+
+    if not np.any(valid_mask):
+        return False
+
+    # Get valid indices
+    valid_t1 = t1_indices[valid_mask]
+    valid_t2 = t2_indices[valid_mask]
+    valid_rtimes = rtimes[valid_mask]
+
+    # Vectorize consecutive checks
+    t1_diffs = np.diff(valid_t1)
+    t2_diffs = np.diff(valid_t2)
+    rtime_diffs = np.diff(valid_rtimes)
+
+    # Find where consecutive conditions are met
+    consecutive_mask = (t1_diffs == 1) & (t2_diffs == 1) & (rtime_diffs == 0)
+
+    # Count blocks efficiently
     block_length = 1
-    prev_rtime = None
-    prev_t1 = None
-    prev_t2 = None
     num_blocks = 0
 
-    for t1, t2 in zip(t1_indices, t2_indices):
-        rtime = abs(t2 - t1)
-        if rtime < min_recurrence_time:
-            continue
-
-        if rtime == prev_rtime and abs(t1 - prev_t1) == 1 and abs(t2 - prev_t2) == 1:
+    for is_consecutive in consecutive_mask:
+        if is_consecutive:
             block_length += 1
         else:
             if block_length >= min_block_length:
                 num_blocks += 1
             block_length = 1
 
-        prev_t1, prev_t2, prev_rtime = t1, t2, rtime
-
-        # Early termination conditions
-        if block_length >= min_block_length * 2 or num_blocks >= 2:
+        # Early termination
+        if block_length >= min_block_length * 2 or num_blocks >= num_blocks_to_find:
             return True
 
-    return num_blocks >= 1
+    # Check final block
+    if block_length >= min_block_length:
+        num_blocks += 1
+
+    # Termination if we found enough blocks
+    if num_blocks >= num_blocks_to_find:
+        return True
+
+    if max_block_separation == 0:
+        return False
+
+    # Vectorize endpoint distance calculation
+    block_endpoints_distances = np.abs(valid_t1 - valid_t2)
+    num_relaxed_blocks = np.sum(block_endpoints_distances < max_block_separation)
+
+    enough_relaxed_blocks = (
+        num_relaxed_blocks >= min_block_length * max_block_separation
+    )
+    return bool(enough_relaxed_blocks)
 
 
 def check_lyapunov_exponent(traj: np.ndarray, traj_len: int = 100) -> bool:
@@ -408,6 +464,7 @@ def check_power_spectrum(
     rel_peak_height: float = 1e-5,
     rel_prominence: float = 1e-5,
     min_peaks: int = 20,
+    ndims_required: int = 1,
 ) -> bool:
     """Check if a multi-dimensional trajectory has characteristics of chaos via power spectrum.
 
@@ -416,6 +473,8 @@ def check_power_spectrum(
         rel_peak_height: Minimum relative peak height threshold
         rel_prominence: Minimum relative peak prominence threshold
         min_peaks: Minimum number of significant peaks for chaos
+        ndims_required: Minimum number of dimensions required to have at least min_peaks peaks to classify the system as potentially chaotic. Default is 1.
+
 
     Returns:
         True if the system exhibits chaotic characteristics
@@ -436,11 +495,14 @@ def check_power_spectrum(
         for dim in range(power.shape[0])
     ]
 
-    return any(len(peaks) >= min_peaks for peaks in peaks_per_dim)
+    return sum(len(peaks) >= min_peaks for peaks in peaks_per_dim) >= ndims_required
 
 
 def check_not_linear(
-    traj: np.ndarray, r2_threshold: float = 0.98, eps: float = 1e-10
+    traj: np.ndarray,
+    r2_threshold: float = 0.98,
+    eps: float = 1e-10,
+    require_all_dims: bool = True,
 ) -> bool:
     """Check if n-dimensional trajectory follows a straight line using PCA.
 
@@ -448,26 +510,24 @@ def check_not_linear(
         traj: Array of shape (num_dims, num_timepoints)
         r2_threshold: Variance explained threshold above which trajectory is considered linear
         eps: Small value to prevent division by zero
+        require_all_dims: If True, require all dimensions to be linear. If False, require at least one dimension to be linear.
 
     Returns:
         bool: False if trajectory is linear, True otherwise
     """
-    points = traj.T  # (num_timepoints, num_dims)
-
-    if np.any(~np.isfinite(points)):
+    if np.any(~np.isfinite(traj)):
         return False
 
-    mean = np.nanmean(points, axis=0)
-    std = np.nanstd(points, axis=0)
-    std = np.where(std < eps, eps, std)
-
-    standardized_points = (points - mean) / std
+    traj = safe_standardize(traj)
 
     try:
-        _, s, _ = np.linalg.svd(standardized_points, full_matrices=False)
+        s = np.linalg.svd(traj.T, full_matrices=False, compute_uv=False)
         explained_variance_ratio = s**2 / (np.sum(s**2) + eps)
-        res = explained_variance_ratio[0] <= r2_threshold
-        return res
+        if require_all_dims:
+            res = bool(np.all(explained_variance_ratio <= r2_threshold))
+        else:
+            res = bool(np.any(explained_variance_ratio <= r2_threshold))
+        return bool(res)
     except Exception as e:
         print(f"Error in check_not_linear: {e}")
         return True  # fallback if SVD fails
@@ -510,6 +570,7 @@ def check_zero_one_test(
     traj: np.ndarray,
     threshold: float = 0.5,
     strategy: Literal["median", "mean", "score"] = "median",
+    standardize: bool = False,
 ) -> bool:
     """
     Compute the zero-one test for a specified system.
@@ -521,7 +582,8 @@ def check_zero_one_test(
     Returns:
         bool, True if the system is chaotic, False otherwise
     """
-    # standard_traj = safe_standardize(traj)
+    if standardize:
+        traj = safe_standardize(traj)
     # go dimension by dimension
     agg_fn = np.median if strategy == "median" else np.mean
     if strategy == "score":

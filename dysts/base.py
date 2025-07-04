@@ -188,7 +188,8 @@ class BaseDyn:
 
     def has_jacobian(self) -> bool:
         """Check if the subclass has implemented the _jac method."""
-        return self._jac is not BaseDyn._jac
+        # NOTE: the first comparison doesn't actually work
+        return self._jac is not BaseDyn._jac and self._jac.__dict__ != {}
 
     def transform_ic(
         self, transform_fn: Callable[[np.ndarray, Any], np.ndarray | None]
@@ -643,6 +644,8 @@ class SkewProduct(DynSys):
     driver: DynSys
     response: DynSys
     driver_dim: int
+
+    # just class-level annotations, not constructor arguments
     response_dim: int
     coupling_map: Callable[[np.ndarray, np.ndarray], np.ndarray]
 

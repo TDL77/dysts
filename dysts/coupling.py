@@ -258,11 +258,16 @@ class RandomAdditiveCouplingMap(BaseCouplingMap):
             "postinit": {
                 "driver_indices": self.driver_indices.tolist(),
             },
+            "coupling_map_cls_name": self.__class__.__name__,
         }
 
     @classmethod
     def _deserialize(cls, data: dict) -> "RandomAdditiveCouplingMap":
         """Deserialize (JSON compatible) coupling map parameters for reconstructing coupling map"""
+        if cls.__name__ != data["coupling_map_cls_name"]:
+            raise ValueError(
+                f"Coupling map class mismatch: {cls.__name__} != {data['coupling_map_cls_name']}"
+            )
         preinit_data = data["preinit"]
         for key in ["driver_scale", "response_scale"]:
             if isinstance(preinit_data[key], list):
@@ -318,6 +323,13 @@ def lowrank_response_matrix(
     return np.hstack([driving_matrix, np.eye(n) + response_matrix])
 
 
+def random_response_matrix(n: int, m: int, rng: np.random.Generator) -> np.ndarray:
+    """
+    Initialize a random response matrix.
+    """
+    return rng.normal(size=(n, m)) / np.sqrt(n + m)
+
+
 @dataclass
 class RandomActivatedCouplingMap(BaseCouplingMap):
     """
@@ -347,7 +359,7 @@ class RandomActivatedCouplingMap(BaseCouplingMap):
         self.rng = np.random.default_rng(self.random_seed)
         self.matrix_init_fn = {
             "lowrank": lowrank_response_matrix,
-            "random": lambda n, m, rng: rng.normal(size=(n, m)) / np.sqrt(n + m),
+            "random": random_response_matrix,
         }[self.matrix_init_fn_name]
         self.coupling_matrix = self.matrix_init_fn(
             self.response_dim, self.driver_dim + self.response_dim, self.rng
@@ -454,8 +466,9 @@ class RandomActivatedCouplingMap(BaseCouplingMap):
                 "random_seed": self.random_seed,
                 "driver_activation_fn_name": self.driver_activation_fn_name,
                 "matrix_init_fn_name": self.matrix_init_fn_name,
-                "coupling_matrix": self.coupling_matrix.tolist(),
             },
+            "coupling_matrix": self.coupling_matrix.tolist(),
+            "coupling_map_cls_name": self.__class__.__name__,
         }
 
     @classmethod
@@ -468,11 +481,14 @@ class RandomActivatedCouplingMap(BaseCouplingMap):
         Returns:
             Reconstructed RandomActivatedCouplingMap instance.
         """
+        if cls.__name__ != data["coupling_map_cls_name"]:
+            raise ValueError(
+                f"Coupling map class mismatch: {cls.__name__} != {data['coupling_map_cls_name']}"
+            )
         preinit_data = data["preinit"]
         for key in ["driver_scale", "response_scale"]:
             if isinstance(preinit_data[key], list):
                 preinit_data[key] = np.array(preinit_data[key])
-        coupling_matrix = np.asarray(preinit_data.pop("coupling_matrix"))
         obj = cls(**preinit_data)
-        obj.coupling_matrix = coupling_matrix
+        obj.coupling_matrix = np.asarray(data["coupling_matrix"])
         return obj

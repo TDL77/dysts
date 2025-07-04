@@ -859,7 +859,7 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
         current_param_pert_summary = {}
         current_param_pert_summary["num_systems_integrated"] = len(ensemble)
 
-        # if skew, then saves only the response coords
+        # NOTE: if skew, then saves only the response coords
         dims = {sys.name: getattr(sys, "driver_dim", 0) for sys in systems}
         ensemble = {sys: traj[:, dims[sys] :, :] for sys, traj in ensemble.items()}
 
@@ -870,6 +870,10 @@ class DynSysSamplerRestartIC(BaseDynSysSampler):
             )
             logger.info(f"{len(ensemble)} systems passed attractor validator")
             current_param_pert_summary["num_systems_valid"] = len(ensemble)
+
+            # NOTE: if we also want to enforce attractor tests for the driver,
+            # we can make a separate ensemble for the driver and response, apply the attractor tests to each,
+            # and take the intersection of the valid systems (both valid driver and response)
 
         if self.wandb_run is not None:
             self.wandb_run.log(current_param_pert_summary)
